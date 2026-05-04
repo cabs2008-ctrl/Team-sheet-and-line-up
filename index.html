@@ -14,9 +14,7 @@ body {
   font-family: Arial;
 }
 
-.header {
-  margin: 20px;
-}
+.header { margin: 20px; }
 
 #teamName {
   font-size: 24px;
@@ -37,7 +35,6 @@ body {
   overflow: hidden;
 }
 
-/* SVG lines */
 .lines {
   position: absolute;
   width: 100%;
@@ -52,10 +49,7 @@ body {
   z-index: 1;
 }
 
-.jersey {
-  width: 44px;
-  height: 44px;
-}
+.jersey { width: 44px; height: 44px; }
 
 .number {
   fill: white;
@@ -74,7 +68,7 @@ body {
   margin-top: 4px;
 }
 
-/* PLAYER POSITIONS */
+/* POSITIONS */
 .p1 { bottom: 10px; left: 50%; transform: translateX(-50%); }
 .p2 { bottom: 110px; right: 20px; }
 .p3 { bottom: 110px; left: 50%; transform: translateX(-50%); }
@@ -104,7 +98,7 @@ body {
 
 <svg class="lines" viewBox="0 0 100 160" preserveAspectRatio="none">
 
-  <!-- OUTER -->
+  <!-- BORDER -->
   <rect x="1" y="1" width="98" height="158" fill="none" stroke="#bdbdbd"/>
 
   <!-- HALF WAY -->
@@ -122,23 +116,33 @@ body {
   <line x1="0" y1="21" x2="100" y2="21" stroke="#bdbdbd"/>
   <line x1="0" y1="139" x2="100" y2="139" stroke="#bdbdbd"/>
 
-  <!-- BIG RECT (20m area) -->
-  <rect x="25" y="1" width="50" height="31" fill="none" stroke="#bdbdbd"/>
-  <rect x="25" y="128" width="50" height="31" fill="none" stroke="#bdbdbd"/>
+  <!-- BIG RECT -->
+  <rect x="25" y="0" width="50" height="32" fill="none" stroke="#bdbdbd"/>
+  <rect x="25" y="128" width="50" height="32" fill="none" stroke="#bdbdbd"/>
 
-  <!-- SMALL RECT (goal area ~13m) -->
-  <rect x="35" y="1" width="30" height="20" fill="none" stroke="#bdbdbd"/>
-  <rect x="35" y="139" width="30" height="20" fill="none" stroke="#bdbdbd"/>
+  <!-- SMALL RECT -->
+  <rect x="35" y="0" width="30" height="21" fill="none" stroke="#bdbdbd"/>
+  <rect x="35" y="139" width="30" height="21" fill="none" stroke="#bdbdbd"/>
 
-  <!-- ARC (correct: centered on goal, radius from 20m line) -->
-  <path d="M25,32 A25,25 0 0 0 75,32" fill="none" stroke="#bdbdbd"/>
-  <path d="M25,128 A25,25 0 0 1 75,128" fill="none" stroke="#bdbdbd"/>
+  <!-- CORRECT ARC (centered on goal line) -->
+  <!-- TOP -->
+  <path d="
+    M 30 32
+    A 20 20 0 0 1 70 32
+  " fill="none" stroke="#bdbdbd"/>
+
+  <!-- BOTTOM -->
+  <path d="
+    M 30 128
+    A 20 20 0 0 0 70 128
+  " fill="none" stroke="#bdbdbd"/>
 
   <!-- GOALS -->
-  <line x1="45" y1="1" x2="45" y2="10" stroke="#bdbdbd"/>
-  <line x1="55" y1="1" x2="55" y2="10" stroke="#bdbdbd"/>
-  <line x1="45" y1="159" x2="45" y2="150" stroke="#bdbdbd"/>
-  <line x1="55" y1="159" x2="55" y2="150" stroke="#bdbdbd"/>
+  <line x1="45" y1="0" x2="45" y2="10" stroke="#bdbdbd"/>
+  <line x1="55" y1="0" x2="55" y2="10" stroke="#bdbdbd"/>
+
+  <line x1="45" y1="160" x2="45" y2="150" stroke="#bdbdbd"/>
+  <line x1="55" y1="160" x2="55" y2="150" stroke="#bdbdbd"/>
 
 </svg>
 
