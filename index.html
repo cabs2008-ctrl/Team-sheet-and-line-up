@@ -39,6 +39,7 @@ body {
 
 .save { background: #1565c0; color: white; }
 .reload { background: #2e7d32; color: white; }
+.reset { background: #c62828; color: white; }
 
 #msg {
   margin-top: 6px;
@@ -133,6 +134,7 @@ body {
 
   <button class="btn save" onclick="saveData()">Save</button>
   <button class="btn reload" onclick="reloadData()">Reload</button>
+  <button class="btn reset" onclick="resetAll()">Reset All</button>
 
   <div class="color-picker">
     Jersey Color: <input type="color" id="colorPicker">
@@ -177,7 +179,10 @@ body {
 </div>
 
 <script>
-let players = JSON.parse(localStorage.getItem("team")) || Array(15).fill("Player");
+const defaultPlayers = Array(15).fill("Player");
+defaultPlayers[0] = "Goalkeeper";
+
+let players = JSON.parse(localStorage.getItem("team")) || [...defaultPlayers];
 let jerseyColor = localStorage.getItem("jerseyColor") || "#8b0000";
 
 const pitch = document.getElementById("pitch");
@@ -198,7 +203,7 @@ function saveData() {
 
 /* RELOAD */
 function reloadData() {
-  players = JSON.parse(localStorage.getItem("team")) || players;
+  players = JSON.parse(localStorage.getItem("team")) || [...defaultPlayers];
   input.value = localStorage.getItem("teamName") || "";
   jerseyColor = localStorage.getItem("jerseyColor") || "#8b0000";
   colorPicker.value = jerseyColor;
@@ -206,12 +211,27 @@ function reloadData() {
   showMsg("Reloaded!");
 }
 
+/* RESET ALL */
+function resetAll() {
+  if (!confirm("Reset everything?")) return;
+
+  localStorage.clear();
+
+  players = [...defaultPlayers];
+  jerseyColor = "#8b0000";
+  input.value = "";
+  colorPicker.value = jerseyColor;
+
+  render();
+  showMsg("Reset complete");
+}
+
 function showMsg(text) {
   msg.innerText = text;
   setTimeout(() => msg.innerText = "", 1500);
 }
 
-/* COLOR CHANGE */
+/* COLOR */
 colorPicker.oninput = function () {
   jerseyColor = this.value;
   render();
