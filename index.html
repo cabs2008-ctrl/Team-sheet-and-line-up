@@ -116,26 +116,30 @@ body {
   <line x1="0" y1="21" x2="100" y2="21" stroke="#bdbdbd"/>
   <line x1="0" y1="139" x2="100" y2="139" stroke="#bdbdbd"/>
 
-  <!-- BIG RECT -->
-  <rect x="25" y="0" width="50" height="32" fill="none" stroke="#bdbdbd"/>
-  <rect x="25" y="128" width="50" height="32" fill="none" stroke="#bdbdbd"/>
+  <!-- LARGE RECT (13m) -->
+  <rect x="25" y="0" width="50" height="21" fill="none" stroke="#bdbdbd"/>
+  <rect x="25" y="139" width="50" height="21" fill="none" stroke="#bdbdbd"/>
 
-  <!-- SMALL RECT -->
-  <rect x="35" y="0" width="30" height="21" fill="none" stroke="#bdbdbd"/>
-  <rect x="35" y="139" width="30" height="21" fill="none" stroke="#bdbdbd"/>
+  <!-- SMALL RECT (goal area ~4.5m scaled) -->
+  <rect x="35" y="0" width="30" height="8" fill="none" stroke="#bdbdbd"/>
+  <rect x="35" y="152" width="30" height="8" fill="none" stroke="#bdbdbd"/>
 
-  <!-- CORRECT ARC DIRECTION -->
-  <!-- TOP (curves DOWN into field) -->
+  <!-- ARC (20m from goal centre) -->
+  <!-- TOP -->
   <path d="M30,32 A20,20 0 0 0 70,32" fill="none" stroke="#bdbdbd"/>
-
-  <!-- BOTTOM (curves UP into field) -->
+  <!-- BOTTOM -->
   <path d="M30,128 A20,20 0 0 1 70,128" fill="none" stroke="#bdbdbd"/>
 
-  <!-- GOALS -->
-  <line x1="45" y1="0" x2="45" y2="10" stroke="#bdbdbd"/>
-  <line x1="55" y1="0" x2="55" y2="10" stroke="#bdbdbd"/>
-  <line x1="45" y1="160" x2="45" y2="150" stroke="#bdbdbd"/>
-  <line x1="55" y1="160" x2="55" y2="150" stroke="#bdbdbd"/>
+  <!-- GOALS (posts + crossbar) -->
+  <!-- TOP -->
+  <line x1="45" y1="0" x2="45" y2="12" stroke="#bdbdbd"/>
+  <line x1="55" y1="0" x2="55" y2="12" stroke="#bdbdbd"/>
+  <line x1="45" y1="12" x2="55" y2="12" stroke="#bdbdbd"/>
+
+  <!-- BOTTOM -->
+  <line x1="45" y1="160" x2="45" y2="148" stroke="#bdbdbd"/>
+  <line x1="55" y1="160" x2="55" y2="148" stroke="#bdbdbd"/>
+  <line x1="45" y1="148" x2="55" y2="148" stroke="#bdbdbd"/>
 
 </svg>
 
