@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GAA Lineup (Spec Accurate)</title>
+<title>GAA Lineup (Final)</title>
 
 <style>
 body {
@@ -27,7 +27,7 @@ body {
 /* PITCH */
 .pitch {
   width: 360px;
-  height: 560px; /* 140:90 ratio */
+  height: 560px;
   background: #e6e6e6;
   border: 6px solid #bdbdbd;
   border-radius: 10px;
@@ -68,7 +68,7 @@ body {
   margin-top: 3px;
 }
 
-/* FORMATION scaled to new pitch */
+/* FORMATION */
 .p1 { bottom: 8px; left: 50%; transform: translateX(-50%); }
 .p2 { bottom: 90px; right: 20px; }
 .p3 { bottom: 90px; left: 50%; transform: translateX(-50%); }
@@ -96,13 +96,12 @@ body {
 
 <div class="pitch" id="pitch">
 
-<!-- TRUE SCALE: 140m length, 90m width -->
 <svg class="lines" viewBox="0 0 90 140" preserveAspectRatio="none">
 
   <!-- BORDER -->
   <rect x="0.5" y="0.5" width="89" height="139" fill="none" stroke="#bdbdbd"/>
 
-  <!-- HALF WAY (70m) -->
+  <!-- HALF WAY -->
   <line x1="0" y1="70" x2="90" y2="70" stroke="#bdbdbd"/>
 
   <!-- 45m -->
@@ -117,39 +116,30 @@ body {
   <line x1="0" y1="13" x2="90" y2="13" stroke="#bdbdbd"/>
   <line x1="0" y1="127" x2="90" y2="127" stroke="#bdbdbd"/>
 
-  <!-- LARGE RECT (13m deep, 40m wide) -->
+  <!-- LARGE RECT -->
   <rect x="25" y="0" width="40" height="13" fill="none" stroke="#bdbdbd"/>
   <rect x="25" y="127" width="40" height="13" fill="none" stroke="#bdbdbd"/>
 
-  <!-- SMALL RECT (4.5m deep, 14m wide approx scaled) -->
+  <!-- SMALL RECT -->
   <rect x="38" y="0" width="14" height="4.5" fill="none" stroke="#bdbdbd"/>
   <rect x="38" y="135.5" width="14" height="4.5" fill="none" stroke="#bdbdbd"/>
 
-  <!-- ARC (20m radius from goal centre) -->
+  <!-- ARC -->
+  <path d="M25 20 A20 20 0 0 0 65 20" fill="none" stroke="#bdbdbd"/>
+  <path d="M25 120 A20 20 0 0 1 65 120" fill="none" stroke="#bdbdbd"/>
+
+  <!-- GOALS (FIXED: facing into pitch) -->
   <!-- TOP -->
-  <path d="
-    M 25 20
-    A 20 20 0 0 0 65 20
-  " fill="none" stroke="#bdbdbd"/>
+  <line x1="43" y1="0" x2="43" y2="10" stroke="#bdbdbd"/>
+  <line x1="47" y1="0" x2="47" y2="10" stroke="#bdbdbd"/>
+  <line x1="43" y1="10" x2="47" y2="10" stroke="#bdbdbd"/>
+  <rect x="43" y="0" width="4" height="6" fill="none" stroke="#bdbdbd"/>
 
   <!-- BOTTOM -->
-  <path d="
-    M 25 120
-    A 20 20 0 0 1 65 120
-  " fill="none" stroke="#bdbdbd"/>
-
-  <!-- GOALS WITH NET -->
-  <!-- TOP -->
-  <rect x="43" y="-3" width="4" height="3" fill="none" stroke="#bdbdbd"/> <!-- net depth -->
-  <line x1="43" y1="0" x2="43" y2="7" stroke="#bdbdbd"/>
-  <line x1="47" y1="0" x2="47" y2="7" stroke="#bdbdbd"/>
-  <line x1="43" y1="7" x2="47" y2="7" stroke="#bdbdbd"/>
-
-  <!-- BOTTOM -->
-  <rect x="43" y="140" width="4" height="3" fill="none" stroke="#bdbdbd"/>
-  <line x1="43" y1="140" x2="43" y2="133" stroke="#bdbdbd"/>
-  <line x1="47" y1="140" x2="47" y2="133" stroke="#bdbdbd"/>
-  <line x1="43" y1="133" x2="47" y2="133" stroke="#bdbdbd"/>
+  <line x1="43" y1="140" x2="43" y2="130" stroke="#bdbdbd"/>
+  <line x1="47" y1="140" x2="47" y2="130" stroke="#bdbdbd"/>
+  <line x1="43" y1="130" x2="47" y2="130" stroke="#bdbdbd"/>
+  <rect x="43" y="134" width="4" height="6" fill="none" stroke="#bdbdbd"/>
 
 </svg>
 
