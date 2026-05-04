@@ -37,6 +37,7 @@ body {
   overflow: hidden;
 }
 
+/* SVG lines */
 .lines {
   position: absolute;
   width: 100%;
@@ -73,7 +74,7 @@ body {
   margin-top: 4px;
 }
 
-/* FORMATION */
+/* PLAYER POSITIONS */
 .p1 { bottom: 10px; left: 50%; transform: translateX(-50%); }
 .p2 { bottom: 110px; right: 20px; }
 .p3 { bottom: 110px; left: 50%; transform: translateX(-50%); }
@@ -103,35 +104,35 @@ body {
 
 <svg class="lines" viewBox="0 0 100 160" preserveAspectRatio="none">
 
-  <!-- BORDER -->
+  <!-- OUTER -->
   <rect x="1" y="1" width="98" height="158" fill="none" stroke="#bdbdbd"/>
 
   <!-- HALF WAY -->
   <line x1="0" y1="80" x2="100" y2="80" stroke="#bdbdbd"/>
 
   <!-- 45m -->
-  <line x1="0" y1="52" x2="100" y2="52" stroke="#bdbdbd"/>
-  <line x1="0" y1="108" x2="100" y2="108" stroke="#bdbdbd"/>
+  <line x1="0" y1="51" x2="100" y2="51" stroke="#bdbdbd"/>
+  <line x1="0" y1="109" x2="100" y2="109" stroke="#bdbdbd"/>
 
   <!-- 20m -->
   <line x1="0" y1="32" x2="100" y2="32" stroke="#bdbdbd"/>
   <line x1="0" y1="128" x2="100" y2="128" stroke="#bdbdbd"/>
 
   <!-- 13m -->
-  <line x1="0" y1="20" x2="100" y2="20" stroke="#bdbdbd"/>
-  <line x1="0" y1="140" x2="100" y2="140" stroke="#bdbdbd"/>
+  <line x1="0" y1="21" x2="100" y2="21" stroke="#bdbdbd"/>
+  <line x1="0" y1="139" x2="100" y2="139" stroke="#bdbdbd"/>
 
   <!-- BIG RECT (20m area) -->
-  <rect x="25" y="1" width="50" height="39" fill="none" stroke="#bdbdbd"/>
-  <rect x="25" y="120" width="50" height="39" fill="none" stroke="#bdbdbd"/>
+  <rect x="25" y="1" width="50" height="31" fill="none" stroke="#bdbdbd"/>
+  <rect x="25" y="128" width="50" height="31" fill="none" stroke="#bdbdbd"/>
 
-  <!-- SMALL RECT (goal area) -->
-  <rect x="35" y="1" width="30" height="18" fill="none" stroke="#bdbdbd"/>
-  <rect x="35" y="141" width="30" height="18" fill="none" stroke="#bdbdbd"/>
+  <!-- SMALL RECT (goal area ~13m) -->
+  <rect x="35" y="1" width="30" height="20" fill="none" stroke="#bdbdbd"/>
+  <rect x="35" y="139" width="30" height="20" fill="none" stroke="#bdbdbd"/>
 
-  <!-- ARCS (20m semi circles) -->
-  <path d="M25,40 A25,25 0 0 0 75,40" fill="none" stroke="#bdbdbd"/>
-  <path d="M25,120 A25,25 0 0 1 75,120" fill="none" stroke="#bdbdbd"/>
+  <!-- ARC (correct: centered on goal, radius from 20m line) -->
+  <path d="M25,32 A25,25 0 0 0 75,32" fill="none" stroke="#bdbdbd"/>
+  <path d="M25,128 A25,25 0 0 1 75,128" fill="none" stroke="#bdbdbd"/>
 
   <!-- GOALS -->
   <line x1="45" y1="1" x2="45" y2="10" stroke="#bdbdbd"/>
