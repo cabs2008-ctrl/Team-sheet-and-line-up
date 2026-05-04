@@ -37,6 +37,15 @@ body {
   border: 6px solid #bdbdbd;
   border-radius: 10px;
   position: relative;
+  overflow: hidden;
+}
+
+/* PITCH LINES */
+.lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 /* PLAYER */
@@ -44,9 +53,10 @@ body {
   position: absolute;
   text-align: center;
   cursor: pointer;
+  z-index: 1;
 }
 
-/* JERSEY SVG */
+/* JERSEY */
 .jersey {
   width: 45px;
   height: 45px;
@@ -100,7 +110,35 @@ body {
   <input id="teamName" placeholder="Enter Team Name">
 </div>
 
-<div class="pitch" id="pitch"></div>
+<div class="pitch" id="pitch">
+
+  <!-- PITCH LINES -->
+  <svg class="lines" viewBox="0 0 100 160" preserveAspectRatio="none">
+
+    <!-- Outer border -->
+    <rect x="1" y="1" width="98" height="158" fill="none" stroke="#bdbdbd" stroke-width="1"/>
+
+    <!-- Halfway line -->
+    <line x1="0" y1="80" x2="100" y2="80" stroke="#bdbdbd" stroke-width="1"/>
+
+    <!-- Center circle -->
+    <circle cx="50" cy="80" r="12" fill="none" stroke="#bdbdbd" stroke-width="1"/>
+
+    <!-- Top penalty box -->
+    <rect x="20" y="1" width="60" height="30" fill="none" stroke="#bdbdbd" stroke-width="1"/>
+
+    <!-- Top goal area -->
+    <rect x="35" y="1" width="30" height="15" fill="none" stroke="#bdbdbd" stroke-width="1"/>
+
+    <!-- Bottom penalty box -->
+    <rect x="20" y="129" width="60" height="30" fill="none" stroke="#bdbdbd" stroke-width="1"/>
+
+    <!-- Bottom goal area -->
+    <rect x="35" y="144" width="30" height="15" fill="none" stroke="#bdbdbd" stroke-width="1"/>
+
+  </svg>
+
+</div>
 
 <script>
 const defaultPlayers = [
@@ -124,7 +162,7 @@ teamInput.addEventListener("input", () => {
   localStorage.setItem("teamName", teamInput.value);
 });
 
-/* JERSEY SVG TEMPLATE */
+/* JERSEY SVG */
 function jerseySVG(number) {
   return `
   <svg viewBox="0 0 64 64" class="jersey">
@@ -136,7 +174,8 @@ function jerseySVG(number) {
 }
 
 function render() {
-  pitch.innerHTML = "";
+  // remove old players only (keep SVG lines)
+  document.querySelectorAll(".player").forEach(el => el.remove());
 
   players.forEach((name, i) => {
     const div = document.createElement("div");
