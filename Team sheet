@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Name Editor App</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 500px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 70%;
+    }
+    button {
+      padding: 10px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    li {
+      list-style: none;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Name Editor</h2>
+
+  <input type="text" id="nameInput" placeholder="Enter name">
+  <button onclick="addName()">Add</button>
+
+  <ul id="nameList"></ul>
+
+  <script>
+    let names = JSON.parse(localStorage.getItem("names")) || [];
+
+    function save() {
+      localStorage.setItem("names", JSON.stringify(names));
+    }
+
+    function render() {
+      const list = document.getElementById("nameList");
+      list.innerHTML = "";
+
+      names.forEach((name, index) => {
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+          <span>${name}</span>
+          <button onclick="editName(${index})">Edit</button>
+          <button onclick="deleteName(${index})">Delete</button>
+        `;
+
+        list.appendChild(li);
+      });
+    }
+
+    function addName() {
+      const input = document.getElementById("nameInput");
+      if (input.value.trim() === "") return;
+
+      names.push(input.value);
+      input.value = "";
+      save();
+      render();
+    }
+
+    function editName(index) {
+      const newName = prompt("Edit name:", names[index]);
+      if (newName !== null && newName.trim() !== "") {
+        names[index] = newName;
+        save();
+        render();
+      }
+    }
+
+    function deleteName(index) {
+      names.splice(index, 1);
+      save();
+      render();
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
