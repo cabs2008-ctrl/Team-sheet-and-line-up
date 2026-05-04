@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GAA Lineup (Correct Final)</title>
+<title>GAA Lineup</title>
 
 <style>
 body {
@@ -14,16 +14,35 @@ body {
   font-family: Arial;
 }
 
-.header { margin: 20px; }
+.header { margin: 20px; text-align: center; }
 
 #teamName {
-  font-size: 24px;
+  font-size: 22px;
   padding: 8px;
   border-radius: 8px;
   border: none;
   text-align: center;
+  margin-bottom: 10px;
 }
 
+/* SAVE BUTTON */
+.save-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1e88e5;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.save-msg {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #333;
+}
+
+/* PITCH */
 .pitch {
   width: 360px;
   height: 560px;
@@ -67,7 +86,7 @@ body {
   margin-top: 3px;
 }
 
-/* FORMATION */
+/* POSITIONS */
 .p1 { bottom: 8px; left: 50%; transform: translateX(-50%); }
 .p2 { bottom: 90px; right: 20px; }
 .p3 { bottom: 90px; left: 50%; transform: translateX(-50%); }
@@ -91,54 +110,47 @@ body {
 
 <div class="header">
   <input id="teamName" placeholder="Team Name">
+  <br>
+  <button class="save-btn" onclick="saveData()">Save</button>
+  <div class="save-msg" id="saveMsg"></div>
 </div>
 
 <div class="pitch" id="pitch">
 
 <svg class="lines" viewBox="0 0 90 140" preserveAspectRatio="none">
 
-  <!-- BORDER -->
   <rect x="0.5" y="0.5" width="89" height="139" fill="none" stroke="#bdbdbd"/>
 
-  <!-- HALF WAY -->
   <line x1="0" y1="70" x2="90" y2="70" stroke="#bdbdbd"/>
 
-  <!-- 45m -->
-  <line x1="0" y1="45" x2="90" y2="45" stroke="#bdbdbd"/>
-  <line x1="0" y1="95" x2="90" y2="95" stroke="#bdbdbd"/>
+  <line x1="0" y1="45" x2="90" y2="45"/>
+  <line x1="0" y1="95" x2="90" y2="95"/>
 
-  <!-- 20m -->
-  <line x1="0" y1="20" x2="90" y2="20" stroke="#bdbdbd"/>
-  <line x1="0" y1="120" x2="90" y2="120" stroke="#bdbdbd"/>
+  <line x1="0" y1="20" x2="90" y2="20"/>
+  <line x1="0" y1="120" x2="90" y2="120"/>
 
-  <!-- 13m -->
-  <line x1="0" y1="13" x2="90" y2="13" stroke="#bdbdbd"/>
-  <line x1="0" y1="127" x2="90" y2="127" stroke="#bdbdbd"/>
+  <line x1="0" y1="13" x2="90" y2="13"/>
+  <line x1="0" y1="127" x2="90" y2="127"/>
 
-  <!-- LARGE RECT -->
-  <rect x="25" y="0" width="40" height="13" fill="none" stroke="#bdbdbd"/>
-  <rect x="25" y="127" width="40" height="13" fill="none" stroke="#bdbdbd"/>
+  <rect x="25" y="0" width="40" height="13" fill="none"/>
+  <rect x="25" y="127" width="40" height="13" fill="none"/>
 
-  <!-- SMALL RECT -->
-  <rect x="38" y="0" width="14" height="4.5" fill="none" stroke="#bdbdbd"/>
-  <rect x="38" y="135.5" width="14" height="4.5" fill="none" stroke="#bdbdbd"/>
+  <rect x="38" y="0" width="14" height="4.5" fill="none"/>
+  <rect x="38" y="135.5" width="14" height="4.5" fill="none"/>
 
-  <!-- ARC -->
-  <path d="M25 20 A20 20 0 0 0 65 20" fill="none" stroke="#bdbdbd"/>
-  <path d="M25 120 A20 20 0 0 1 65 120" fill="none" stroke="#bdbdbd"/>
+  <path d="M25 20 A20 20 0 0 0 65 20" fill="none"/>
+  <path d="M25 120 A20 20 0 0 1 65 120" fill="none"/>
 
-  <!-- GOALS (NOW FACING OUTSIDE PITCH) -->
-  <!-- TOP -->
-  <line x1="43" y1="0" x2="43" y2="7" stroke="#bdbdbd"/>
-  <line x1="47" y1="0" x2="47" y2="7" stroke="#bdbdbd"/>
-  <line x1="43" y1="7" x2="47" y2="7" stroke="#bdbdbd"/>
-  <rect x="43" y="-5" width="4" height="5" fill="none" stroke="#bdbdbd"/>
+  <!-- GOALS (correct orientation) -->
+  <line x1="43" y1="0" x2="43" y2="7"/>
+  <line x1="47" y1="0" x2="47" y2="7"/>
+  <line x1="43" y1="7" x2="47" y2="7"/>
+  <rect x="43" y="-5" width="4" height="5" fill="none"/>
 
-  <!-- BOTTOM -->
-  <line x1="43" y1="140" x2="43" y2="133" stroke="#bdbdbd"/>
-  <line x1="47" y1="140" x2="47" y2="133" stroke="#bdbdbd"/>
-  <line x1="43" y1="133" x2="47" y2="133" stroke="#bdbdbd"/>
-  <rect x="43" y="140" width="4" height="5" fill="none" stroke="#bdbdbd"/>
+  <line x1="43" y1="140" x2="43" y2="133"/>
+  <line x1="47" y1="140" x2="47" y2="133"/>
+  <line x1="43" y1="133" x2="47" y2="133"/>
+  <rect x="43" y="140" width="4" height="5" fill="none"/>
 
 </svg>
 
@@ -152,10 +164,20 @@ let teamName = localStorage.getItem("teamName") || "";
 
 const pitch = document.getElementById("pitch");
 const input = document.getElementById("teamName");
+const saveMsg = document.getElementById("saveMsg");
 
 input.value = teamName;
-input.oninput = () => localStorage.setItem("teamName", input.value);
 
+/* SAVE BUTTON FUNCTION */
+function saveData() {
+  localStorage.setItem("team", JSON.stringify(players));
+  localStorage.setItem("teamName", input.value);
+
+  saveMsg.innerText = "Saved!";
+  setTimeout(() => saveMsg.innerText = "", 1500);
+}
+
+/* JERSEY */
 function jersey(n) {
   return `
   <svg viewBox="0 0 64 64" class="jersey">
@@ -165,6 +187,7 @@ function jersey(n) {
   </svg>`;
 }
 
+/* RENDER */
 function render() {
   document.querySelectorAll(".player").forEach(e => e.remove());
 
@@ -177,7 +200,6 @@ function render() {
       let n = prompt("Edit player:", name);
       if (n && n.trim()) {
         players[i] = n;
-        localStorage.setItem("team", JSON.stringify(players));
         render();
       }
     };
