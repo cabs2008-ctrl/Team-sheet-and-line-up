@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>GAA Lineup</title>
 
+<!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
 body {
   margin: 0;
@@ -29,26 +32,24 @@ body {
 
 /* BUTTONS */
 .btn {
-  padding: 8px 14px;
-  margin: 5px;
+  padding: 8px 12px;
+  margin: 4px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  color: white;
 }
 
-.save { background: #1565c0; color: white; }
-.reload { background: #2e7d32; color: white; }
-.reset { background: #c62828; color: white; }
+.save { background: #1565c0; }
+.reload { background: #2e7d32; }
+.reset { background: #c62828; }
+.download { background: #ff9800; }
+.share { background: #25D366; }
 
 #msg {
   margin-top: 6px;
   font-size: 12px;
-}
-
-/* COLOR PICKER */
-.color-picker {
-  margin-top: 10px;
 }
 
 /* PITCH */
@@ -134,24 +135,29 @@ body {
 
   <button class="btn save" onclick="saveData()">Save</button>
   <button class="btn reload" onclick="reloadData()">Reload</button>
-  <button class="btn reset" onclick="resetAll()">Reset All</button>
+  <button class="btn reset" onclick="resetAll()">Reset</button>
+  <button class="btn download" onclick="downloadImage()">Download</button>
+  <button class="btn share" onclick="shareImage()">Share</button>
 
-  <div class="color-picker">
-    Jersey Color: <input type="color" id="colorPicker">
-  </div>
+  <br>
+  Jersey Color: <input type="color" id="colorPicker">
 
   <div id="msg"></div>
 </div>
 
 <div class="pitch" id="pitch">
 
-<svg class="lines" viewBox="0 0 90 140" preserveAspectRatio="none">
+<svg class="lines" viewBox="0 0 90 140">
+
   <rect x="0" y="0" width="90" height="140"/>
   <line x1="0" y1="70" x2="90" y2="70"/>
+
   <line x1="0" y1="45" x2="90" y2="45"/>
   <line x1="0" y1="95" x2="90" y2="95"/>
+
   <line x1="0" y1="20" x2="90" y2="20"/>
   <line x1="0" y1="120" x2="90" y2="120"/>
+
   <line x1="0" y1="13" x2="90" y2="13"/>
   <line x1="0" y1="127" x2="90" y2="127"/>
 
@@ -164,16 +170,6 @@ body {
   <path d="M25 20 A20 20 0 0 0 65 20"/>
   <path d="M25 120 A20 20 0 0 1 65 120"/>
 
-  <!-- GOALS -->
-  <line x1="43" y1="0" x2="43" y2="7"/>
-  <line x1="47" y1="0" x2="47" y2="7"/>
-  <line x1="43" y1="7" x2="47" y2="7"/>
-  <rect x="43" y="-5" width="4" height="5"/>
-
-  <line x1="43" y1="140" x2="43" y2="133"/>
-  <line x1="47" y1="140" x2="47" y2="133"/>
-  <line x1="43" y1="133" x2="47" y2="133"/>
-  <rect x="43" y="140" width="4" height="5"/>
 </svg>
 
 </div>
@@ -211,29 +207,49 @@ function reloadData() {
   showMsg("Reloaded!");
 }
 
-/* RESET ALL */
+/* RESET */
 function resetAll() {
   if (!confirm("Reset everything?")) return;
-
   localStorage.clear();
-
   players = [...defaultPlayers];
-  jerseyColor = "#8b0000";
   input.value = "";
+  jerseyColor = "#8b0000";
   colorPicker.value = jerseyColor;
-
   render();
   showMsg("Reset complete");
 }
 
-function showMsg(text) {
-  msg.innerText = text;
-  setTimeout(() => msg.innerText = "", 1500);
+/* IMAGE DOWNLOAD */
+function downloadImage() {
+  html2canvas(pitch).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "lineup.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+
+/* SHARE (mobile) */
+function shareImage() {
+  html2canvas(pitch).then(canvas => {
+    canvas.toBlob(blob => {
+      const file = new File([blob], "lineup.png", { type: "image/png" });
+
+      if (navigator.share) {
+        navigator.share({
+          title: "Team Lineup",
+          files: [file]
+        });
+      } else {
+        alert("Sharing not supported. Use Download instead.");
+      }
+    });
+  });
 }
 
 /* COLOR */
-colorPicker.oninput = function () {
-  jerseyColor = this.value;
+colorPicker.oninput = () => {
+  jerseyColor = colorPicker.value;
   render();
 };
 
@@ -266,6 +282,11 @@ function render() {
 
     pitch.appendChild(d);
   });
+}
+
+function showMsg(t) {
+  msg.innerText = t;
+  setTimeout(() => msg.innerText = "", 1500);
 }
 
 render();
