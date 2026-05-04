@@ -24,13 +24,12 @@ body {
   padding: 8px;
   border-radius: 8px;
   border: none;
-  text-align: center;
   margin-bottom: 10px;
 }
 
 /* BUTTONS */
 .btn {
-  padding: 10px 16px;
+  padding: 8px 14px;
   margin: 5px;
   border: none;
   border-radius: 8px;
@@ -42,22 +41,32 @@ body {
 .reload { background: #2e7d32; color: white; }
 
 #msg {
-  margin-top: 8px;
-  font-size: 13px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* COLOR PICKER */
+.color-picker {
+  margin-top: 10px;
 }
 
 /* PITCH */
 .pitch {
   width: 360px;
   height: 560px;
-  background: #4caf50; /* green pitch restored */
+  background: repeating-linear-gradient(
+    to bottom,
+    #4caf50 0px,
+    #4caf50 40px,
+    #43a047 40px,
+    #43a047 80px
+  );
   border: 6px solid #bdbdbd;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
 }
 
-/* SVG LINES */
 .lines {
   position: absolute;
   width: 100%;
@@ -120,43 +129,36 @@ body {
 <body>
 
 <div class="header">
-  <input id="teamName" placeholder="Team Name">
-  <br>
+  <input id="teamName" placeholder="Team Name"><br>
+
   <button class="btn save" onclick="saveData()">Save</button>
   <button class="btn reload" onclick="reloadData()">Reload</button>
+
+  <div class="color-picker">
+    Jersey Color: <input type="color" id="colorPicker">
+  </div>
+
   <div id="msg"></div>
 </div>
 
 <div class="pitch" id="pitch">
 
 <svg class="lines" viewBox="0 0 90 140" preserveAspectRatio="none">
-
-  <!-- BORDER -->
   <rect x="0" y="0" width="90" height="140"/>
-
-  <!-- HALF WAY -->
   <line x1="0" y1="70" x2="90" y2="70"/>
-
-  <!-- 45m -->
   <line x1="0" y1="45" x2="90" y2="45"/>
   <line x1="0" y1="95" x2="90" y2="95"/>
-
-  <!-- 20m -->
   <line x1="0" y1="20" x2="90" y2="20"/>
   <line x1="0" y1="120" x2="90" y2="120"/>
-
-  <!-- 13m -->
   <line x1="0" y1="13" x2="90" y2="13"/>
   <line x1="0" y1="127" x2="90" y2="127"/>
 
-  <!-- BOXES -->
   <rect x="25" y="0" width="40" height="13"/>
   <rect x="25" y="127" width="40" height="13"/>
 
   <rect x="38" y="0" width="14" height="4.5"/>
   <rect x="38" y="135.5" width="14" height="4.5"/>
 
-  <!-- ARCS -->
   <path d="M25 20 A20 20 0 0 0 65 20"/>
   <path d="M25 120 A20 20 0 0 1 65 120"/>
 
@@ -170,29 +172,36 @@ body {
   <line x1="47" y1="140" x2="47" y2="133"/>
   <line x1="43" y1="133" x2="47" y2="133"/>
   <rect x="43" y="140" width="4" height="5"/>
-
 </svg>
 
 </div>
 
 <script>
 let players = JSON.parse(localStorage.getItem("team")) || Array(15).fill("Player");
+let jerseyColor = localStorage.getItem("jerseyColor") || "#8b0000";
 
 const pitch = document.getElementById("pitch");
 const input = document.getElementById("teamName");
 const msg = document.getElementById("msg");
+const colorPicker = document.getElementById("colorPicker");
 
 input.value = localStorage.getItem("teamName") || "";
+colorPicker.value = jerseyColor;
 
+/* SAVE */
 function saveData() {
   localStorage.setItem("team", JSON.stringify(players));
   localStorage.setItem("teamName", input.value);
+  localStorage.setItem("jerseyColor", jerseyColor);
   showMsg("Saved!");
 }
 
+/* RELOAD */
 function reloadData() {
   players = JSON.parse(localStorage.getItem("team")) || players;
   input.value = localStorage.getItem("teamName") || "";
+  jerseyColor = localStorage.getItem("jerseyColor") || "#8b0000";
+  colorPicker.value = jerseyColor;
   render();
   showMsg("Reloaded!");
 }
@@ -202,15 +211,23 @@ function showMsg(text) {
   setTimeout(() => msg.innerText = "", 1500);
 }
 
+/* COLOR CHANGE */
+colorPicker.oninput = function () {
+  jerseyColor = this.value;
+  render();
+};
+
+/* JERSEY */
 function jersey(n) {
   return `
   <svg viewBox="0 0 64 64" class="jersey">
     <path d="M16 8 L24 4 L40 4 L48 8 L56 20 L48 24 L48 56 L16 56 L16 24 L8 20 Z"
-    fill="#8b0000"/>
+    fill="${jerseyColor}"/>
     <text x="32" y="32" class="number">${n}</text>
   </svg>`;
 }
 
+/* RENDER */
 function render() {
   document.querySelectorAll(".player").forEach(e => e.remove());
 
