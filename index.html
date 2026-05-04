@@ -9,12 +9,27 @@ body {
   margin: 0;
   background: #00c853;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
   font-family: Arial;
 }
 
+/* HEADER */
+.header {
+  margin: 20px;
+  text-align: center;
+}
+
+#teamName {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+}
+
+/* PITCH */
 .pitch {
   width: 350px;
   height: 600px;
@@ -24,24 +39,25 @@ body {
   position: relative;
 }
 
-/* player */
+/* PLAYER */
 .player {
   position: absolute;
   text-align: center;
   cursor: pointer;
 }
 
-.shirt {
-  width: 40px;
-  height: 40px;
-  background: #8b0000;
-  color: white;
+/* JERSEY SVG */
+.jersey {
+  width: 45px;
+  height: 45px;
+}
+
+.number {
+  fill: white;
+  font-size: 14px;
   font-weight: bold;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
+  text-anchor: middle;
+  dominant-baseline: middle;
 }
 
 .name {
@@ -53,7 +69,7 @@ body {
   margin-top: 4px;
 }
 
-/* positioning (approx like your image) */
+/* POSITIONS */
 .p1 { bottom: 10px; left: 50%; transform: translateX(-50%); }
 
 .p2 { bottom: 100px; right: 20px; }
@@ -80,21 +96,44 @@ body {
 
 <body>
 
+<div class="header">
+  <input id="teamName" placeholder="Enter Team Name">
+</div>
+
 <div class="pitch" id="pitch"></div>
 
 <script>
 const defaultPlayers = [
-  "1 Keeper",
-  "2 Player","3 Player","4 Player",
-  "5 Player","6 Player","7 Player",
-  "8 Player","9 Player",
-  "10 Player","11 Player","12 Player",
-  "13 Player","14 Player","15 Player"
+  "Goalkeeper",
+  "Player","Player","Player",
+  "Player","Player","Player",
+  "Midfield","Midfield",
+  "Forward","Forward","Forward",
+  "Forward","Forward","Forward"
 ];
 
 let players = JSON.parse(localStorage.getItem("team")) || defaultPlayers;
+let teamName = localStorage.getItem("teamName") || "";
 
 const pitch = document.getElementById("pitch");
+const teamInput = document.getElementById("teamName");
+
+teamInput.value = teamName;
+
+teamInput.addEventListener("input", () => {
+  localStorage.setItem("teamName", teamInput.value);
+});
+
+/* JERSEY SVG TEMPLATE */
+function jerseySVG(number) {
+  return `
+  <svg viewBox="0 0 64 64" class="jersey">
+    <path d="M16 8 L24 4 L40 4 L48 8 L56 20 L48 24 L48 56 L16 56 L16 24 L8 20 Z"
+          fill="#8b0000"/>
+    <text x="32" y="32" class="number">${number}</text>
+  </svg>
+  `;
+}
 
 function render() {
   pitch.innerHTML = "";
@@ -104,7 +143,7 @@ function render() {
     div.className = "player p" + (i + 1);
 
     div.innerHTML = `
-      <div class="shirt">${i+1}</div>
+      ${jerseySVG(i+1)}
       <div class="name">${name}</div>
     `;
 
