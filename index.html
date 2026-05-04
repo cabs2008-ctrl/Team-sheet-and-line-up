@@ -19,33 +19,29 @@ body {
   text-align: center;
 }
 
-/* TEAM NAME */
 #teamName {
   font-size: 22px;
   padding: 8px;
   border-radius: 8px;
   border: none;
   text-align: center;
-  display: block;
   margin-bottom: 10px;
 }
 
-/* SAVE BUTTON (CLEAR + VISIBLE) */
-#saveBtn {
-  padding: 10px 20px;
-  font-size: 16px;
+/* BUTTONS */
+.btn {
+  padding: 10px 16px;
+  margin: 5px;
   border: none;
   border-radius: 8px;
-  background: #1565c0;
-  color: white;
   cursor: pointer;
+  font-weight: bold;
 }
 
-#saveBtn:hover {
-  background: #0d47a1;
-}
+.save { background: #1565c0; color: white; }
+.reload { background: #2e7d32; color: white; }
 
-#saveMsg {
+#msg {
   margin-top: 8px;
   font-size: 13px;
 }
@@ -54,18 +50,25 @@ body {
 .pitch {
   width: 360px;
   height: 560px;
-  background: #e6e6e6;
+  background: #4caf50; /* green pitch restored */
   border: 6px solid #bdbdbd;
   border-radius: 10px;
   position: relative;
   overflow: hidden;
 }
 
+/* SVG LINES */
 .lines {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 0;
+}
+
+.lines * {
+  stroke: white;
+  stroke-width: 0.6;
+  fill: none;
 }
 
 .player {
@@ -86,7 +89,7 @@ body {
 }
 
 .name {
-  background: #2e7d32;
+  background: #1b5e20;
   color: white;
   padding: 2px 6px;
   border-radius: 10px;
@@ -118,49 +121,55 @@ body {
 
 <div class="header">
   <input id="teamName" placeholder="Team Name">
-
-  <!-- ✅ SAVE BUTTON -->
-  <button id="saveBtn">Save</button>
-
-  <div id="saveMsg"></div>
+  <br>
+  <button class="btn save" onclick="saveData()">Save</button>
+  <button class="btn reload" onclick="reloadData()">Reload</button>
+  <div id="msg"></div>
 </div>
 
 <div class="pitch" id="pitch">
 
 <svg class="lines" viewBox="0 0 90 140" preserveAspectRatio="none">
 
-  <rect x="0.5" y="0.5" width="89" height="139" fill="none" stroke="#bdbdbd"/>
+  <!-- BORDER -->
+  <rect x="0" y="0" width="90" height="140"/>
 
-  <line x1="0" y1="70" x2="90" y2="70" stroke="#bdbdbd"/>
+  <!-- HALF WAY -->
+  <line x1="0" y1="70" x2="90" y2="70"/>
 
+  <!-- 45m -->
   <line x1="0" y1="45" x2="90" y2="45"/>
   <line x1="0" y1="95" x2="90" y2="95"/>
 
+  <!-- 20m -->
   <line x1="0" y1="20" x2="90" y2="20"/>
   <line x1="0" y1="120" x2="90" y2="120"/>
 
+  <!-- 13m -->
   <line x1="0" y1="13" x2="90" y2="13"/>
   <line x1="0" y1="127" x2="90" y2="127"/>
 
-  <rect x="25" y="0" width="40" height="13" fill="none"/>
-  <rect x="25" y="127" width="40" height="13" fill="none"/>
+  <!-- BOXES -->
+  <rect x="25" y="0" width="40" height="13"/>
+  <rect x="25" y="127" width="40" height="13"/>
 
-  <rect x="38" y="0" width="14" height="4.5" fill="none"/>
-  <rect x="38" y="135.5" width="14" height="4.5" fill="none"/>
+  <rect x="38" y="0" width="14" height="4.5"/>
+  <rect x="38" y="135.5" width="14" height="4.5"/>
 
-  <path d="M25 20 A20 20 0 0 0 65 20" fill="none"/>
-  <path d="M25 120 A20 20 0 0 1 65 120" fill="none"/>
+  <!-- ARCS -->
+  <path d="M25 20 A20 20 0 0 0 65 20"/>
+  <path d="M25 120 A20 20 0 0 1 65 120"/>
 
   <!-- GOALS -->
   <line x1="43" y1="0" x2="43" y2="7"/>
   <line x1="47" y1="0" x2="47" y2="7"/>
   <line x1="43" y1="7" x2="47" y2="7"/>
-  <rect x="43" y="-5" width="4" height="5" fill="none"/>
+  <rect x="43" y="-5" width="4" height="5"/>
 
   <line x1="43" y1="140" x2="43" y2="133"/>
   <line x1="47" y1="140" x2="47" y2="133"/>
   <line x1="43" y1="133" x2="47" y2="133"/>
-  <rect x="43" y="140" width="4" height="5" fill="none"/>
+  <rect x="43" y="140" width="4" height="5"/>
 
 </svg>
 
@@ -168,21 +177,30 @@ body {
 
 <script>
 let players = JSON.parse(localStorage.getItem("team")) || Array(15).fill("Player");
+
 const pitch = document.getElementById("pitch");
 const input = document.getElementById("teamName");
-const saveBtn = document.getElementById("saveBtn");
-const saveMsg = document.getElementById("saveMsg");
+const msg = document.getElementById("msg");
 
 input.value = localStorage.getItem("teamName") || "";
 
-/* ✅ SAVE BUTTON WORKING */
-saveBtn.onclick = function () {
+function saveData() {
   localStorage.setItem("team", JSON.stringify(players));
   localStorage.setItem("teamName", input.value);
+  showMsg("Saved!");
+}
 
-  saveMsg.innerText = "Saved!";
-  setTimeout(() => saveMsg.innerText = "", 1500);
-};
+function reloadData() {
+  players = JSON.parse(localStorage.getItem("team")) || players;
+  input.value = localStorage.getItem("teamName") || "";
+  render();
+  showMsg("Reloaded!");
+}
+
+function showMsg(text) {
+  msg.innerText = text;
+  setTimeout(() => msg.innerText = "", 1500);
+}
 
 function jersey(n) {
   return `
