@@ -75,8 +75,17 @@ body {
 .player{position:absolute;text-align:center;cursor:pointer}
 .jersey{width:40px}
 .number{fill:black;font-size:12px;font-weight:bold;text-anchor:middle}
-.name{background:#1b5e20;color:white;font-size:10px;border-radius:10px}
 
+.name{
+  background:#1b5e20;
+  color:white;
+  font-size:10px;
+  border-radius:10px;
+  min-height:14px; /* 👈 keeps box visible when empty */
+  padding:2px 6px;
+}
+
+/* POSITIONS */
 .p1{bottom:2%;left:50%;transform:translateX(-50%)}
 .p2{bottom:18%;right:5%}
 .p3{bottom:18%;left:50%;transform:translateX(-50%)}
@@ -100,10 +109,6 @@ body {
   border-radius:8px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-}
-.saved-item button{
-  margin-left:4px;
 }
 </style>
 </head>
@@ -116,6 +121,7 @@ body {
 </div>
 
 <div id="lineup" class="section active">
+
 <div class="header">
   <input id="teamName" placeholder="Team Name">
 
@@ -136,6 +142,7 @@ body {
   <line x1="0" y1="70" x2="90" y2="70"/>
 </svg>
 </div>
+
 </div>
 
 <div id="saved" class="section">
@@ -143,8 +150,7 @@ body {
 </div>
 
 <script>
-const defaultPlayers=Array(15).fill("Player");
-defaultPlayers[0]="Goalkeeper";
+const defaultPlayers=Array(15).fill(""); // 👈 EMPTY instead of "Player"
 
 let players=[...defaultPlayers];
 let jerseyColor="#8b0000";
@@ -162,9 +168,6 @@ function showTab(id,el){
 
 function reloadData(){
   players=JSON.parse(localStorage.getItem("team"))||players;
-  input.value=localStorage.getItem("teamName")||"";
-  jerseyColor=localStorage.getItem("jerseyColor")||"#8b0000";
-  colorPicker.value=jerseyColor;
   render();
 }
 
@@ -172,9 +175,6 @@ function resetAll(){
   if(!confirm("Reset everything?"))return;
   localStorage.clear();
   players=[...defaultPlayers];
-  input.value="";
-  jerseyColor="#8b0000";
-  colorPicker.value=jerseyColor;
   render();
 }
 
@@ -183,13 +183,7 @@ function storeTeam(){
   if(!name)return;
 
   let saved=JSON.parse(localStorage.getItem("teams")||"[]");
-
-  saved.push({
-    name,
-    players,
-    jerseyColor
-  });
-
+  saved.push({name,players,jerseyColor});
   localStorage.setItem("teams",JSON.stringify(saved));
   renderSaved();
 }
@@ -197,7 +191,6 @@ function storeTeam(){
 function renderSaved(){
   let list=document.getElementById("savedList");
   list.innerHTML="";
-
   let saved=JSON.parse(localStorage.getItem("teams")||"[]");
 
   saved.forEach((t,i)=>{
@@ -207,8 +200,6 @@ function renderSaved(){
       <span>${t.name}</span>
       <div>
         <button onclick="loadTeam(${i})">Load</button>
-        <button onclick="duplicateTeam(${i})">Copy</button>
-        <button onclick="editTeam(${i})">Edit</button>
         <button onclick="deleteTeam(${i})">X</button>
       </div>`;
     list.appendChild(div);
@@ -218,33 +209,11 @@ function renderSaved(){
 function loadTeam(i){
   let saved=JSON.parse(localStorage.getItem("teams"));
   let t=saved[i];
-
   players=t.players;
   jerseyColor=t.jerseyColor;
   colorPicker.value=jerseyColor;
   render();
-
   showTab("lineup",document.querySelectorAll(".tab")[0]);
-}
-
-/* NEW: DUPLICATE */
-function duplicateTeam(i){
-  let saved=JSON.parse(localStorage.getItem("teams"));
-  let copy={...saved[i], name: saved[i].name + " Copy"};
-  saved.push(copy);
-  localStorage.setItem("teams",JSON.stringify(saved));
-  renderSaved();
-}
-
-/* NEW: EDIT NAME */
-function editTeam(i){
-  let saved=JSON.parse(localStorage.getItem("teams"));
-  let newName=prompt("Edit team name:", saved[i].name);
-  if(!newName)return;
-
-  saved[i].name=newName;
-  localStorage.setItem("teams",JSON.stringify(saved));
-  renderSaved();
 }
 
 function deleteTeam(i){
@@ -296,8 +265,8 @@ function render(){
     d.className="player p"+(i+1);
     d.innerHTML=jersey(i+1)+`<div class="name">${p}</div>`;
     d.onclick=()=>{
-      let n=prompt("Edit",p);
-      if(n){players[i]=n;render();}
+      let n=prompt("Edit player:",p);
+      if(n!==null){players[i]=n;render();}
     };
     pitch.appendChild(d);
   });
