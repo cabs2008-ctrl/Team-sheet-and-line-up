@@ -81,7 +81,12 @@ body {
 /* PLAYERS */
 .player{position:absolute;text-align:center;cursor:pointer}
 .jersey{width:40px}
-.number{fill:black;font-size:12px;font-weight:bold}
+.number{
+  fill:black;
+  font-size:12px;
+  font-weight:bold;
+  text-anchor:middle;
+}
 .name{
   background:#1b5e20;
   color:white;
@@ -282,13 +287,13 @@ colorPicker.oninput=()=>{
   render();
 };
 
-/* JERSEY */
+/* ✅ FIX HERE */
 function jersey(n){
   return `
   <svg viewBox="0 0 64 64" class="jersey">
     <path d="M16 8 L24 4 L40 4 L48 8 L56 20 L48 24 L48 56 L16 56 L16 24 L8 20 Z"
     fill="${jerseyColor}"/>
-    <text x="32" y="32" class="number">${n}</text>
+    <text x="32" y="32" dy=".35em" class="number">${n}</text>
   </svg>`;
 }
 
