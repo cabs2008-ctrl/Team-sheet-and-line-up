@@ -111,8 +111,9 @@ body {
   max-width: 40px;
 }
 
+/* ✅ FIXED HERE */
 .number {
-  fill: white;
+  fill: black;
   font-size: 12px;
   font-weight: bold;
   text-anchor: middle;
@@ -206,7 +207,6 @@ const colorPicker = document.getElementById("colorPicker");
 input.value = localStorage.getItem("teamName") || "";
 colorPicker.value = jerseyColor;
 
-/* SAVE */
 function saveData() {
   localStorage.setItem("team", JSON.stringify(players));
   localStorage.setItem("teamName", input.value);
@@ -214,7 +214,6 @@ function saveData() {
   showMsg("Saved!");
 }
 
-/* RELOAD */
 function reloadData() {
   players = JSON.parse(localStorage.getItem("team")) || [...defaultPlayers];
   input.value = localStorage.getItem("teamName") || "";
@@ -224,7 +223,6 @@ function reloadData() {
   showMsg("Reloaded!");
 }
 
-/* RESET */
 function resetAll() {
   if (!confirm("Reset everything?")) return;
   localStorage.clear();
@@ -236,7 +234,6 @@ function resetAll() {
   showMsg("Reset complete");
 }
 
-/* DOWNLOAD IMAGE */
 function downloadImage() {
   html2canvas(pitch).then(canvas => {
     let link = document.createElement("a");
@@ -246,16 +243,12 @@ function downloadImage() {
   });
 }
 
-/* SHARE IMAGE */
 function shareImage() {
   html2canvas(pitch).then(canvas => {
     canvas.toBlob(blob => {
       let file = new File([blob], "lineup.png", { type: "image/png" });
       if (navigator.share) {
-        navigator.share({
-          title: "Team Lineup",
-          files: [file]
-        });
+        navigator.share({ title: "Team Lineup", files: [file] });
       } else {
         alert("Sharing not supported. Use Download instead.");
       }
@@ -263,13 +256,11 @@ function shareImage() {
   });
 }
 
-/* COLOR */
 colorPicker.oninput = () => {
   jerseyColor = colorPicker.value;
   render();
 };
 
-/* JERSEY */
 function jersey(n) {
   return `
   <svg viewBox="0 0 64 64" class="jersey">
@@ -279,7 +270,6 @@ function jersey(n) {
   </svg>`;
 }
 
-/* RENDER */
 function render() {
   document.querySelectorAll(".player").forEach(e => e.remove());
 
