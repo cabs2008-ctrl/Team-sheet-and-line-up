@@ -58,7 +58,6 @@ body {
   font-weight:bold;
 }
 
-.save{background:#1565c0}
 .reload{background:#2e7d32}
 .reset{background:#c62828}
 .download{background:#ff9800}
@@ -133,7 +132,6 @@ body {
   <input id="teamName" placeholder="Team Name">
 
   <div class="btn-group">
-    <button class="btn save" onclick="saveData()">Save</button>
     <button class="btn reload" onclick="reloadData()">Reload</button>
     <button class="btn reset" onclick="resetAll()">Reset</button>
     <button class="btn download" onclick="downloadImage()">Download</button>
@@ -178,13 +176,6 @@ function showTab(id,el){
   el.classList.add("active");
 }
 
-/* SAVE CURRENT */
-function saveData(){
-  localStorage.setItem("team",JSON.stringify(players));
-  localStorage.setItem("teamName",input.value);
-  localStorage.setItem("jerseyColor",jerseyColor);
-}
-
 /* RELOAD */
 function reloadData(){
   players=JSON.parse(localStorage.getItem("team"))||players;
@@ -205,7 +196,7 @@ function resetAll(){
   render();
 }
 
-/* SAVE TEAM LIST */
+/* SAVE TEAM */
 function storeTeam(){
   let name=prompt("Team name?");
   if(!name)return;
@@ -242,7 +233,7 @@ function renderSaved(){
   });
 }
 
-/* LOAD TEAM */
+/* LOAD */
 function loadTeam(i){
   let saved=JSON.parse(localStorage.getItem("teams"));
   let t=saved[i];
