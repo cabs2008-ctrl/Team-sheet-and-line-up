@@ -17,21 +17,48 @@ body {
   align-items: center;
 }
 
-/* HEADER */
-.header {
+/* TABS */
+.tabs {
+  display: flex;
   width: 100%;
   max-width: 420px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background: #2e7d32;
+  color: white;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #1b5e20;
+}
+
+/* SECTIONS */
+.section {
+  display: none;
+  width: 100%;
+  max-width: 420px;
+}
+
+.section.active {
+  display: block;
+}
+
+/* HEADER */
+.header {
   text-align: center;
   padding: 10px;
 }
 
 #teamName {
   width: 90%;
-  font-size: 18px;
   padding: 10px;
   border-radius: 8px;
   border: none;
-  margin-bottom: 10px;
 }
 
 /* BUTTONS */
@@ -45,110 +72,90 @@ body {
   flex: 1 1 45%;
   margin: 4px;
   padding: 10px;
-  border: none;
   border-radius: 10px;
-  font-size: 14px;
-  font-weight: bold;
+  border: none;
   color: white;
+  font-weight: bold;
 }
 
-.save { background: #1565c0; }
-.reload { background: #2e7d32; }
-.reset { background: #c62828; }
-.download { background: #ff9800; }
-.share { background: #25D366; }
+.save { background:#1565c0;}
+.reload { background:#2e7d32;}
+.reset { background:#c62828;}
+.download { background:#ff9800;}
+.share { background:#25D366;}
+.store { background:#6a1b9a;}
 
-#msg {
-  margin-top: 6px;
-  font-size: 12px;
-}
-
-/* COLOR PICKER */
-.color-picker {
-  margin-top: 8px;
-}
-
-/* PITCH */
 .pitch {
   width: 95vw;
   max-width: 400px;
   aspect-ratio: 90 / 140;
-  background: repeating-linear-gradient(
-    to bottom,
-    #4caf50 0px,
-    #4caf50 40px,
-    #43a047 40px,
-    #43a047 80px
-  );
+  background: repeating-linear-gradient(#4caf50 0 40px,#43a047 40px 80px);
   border: 5px solid #bdbdbd;
   border-radius: 10px;
   position: relative;
-  overflow: hidden;
-}
-
-/* SVG LINES */
-.lines {
-  position: absolute;
-  width: 100%;
-  height: 100%;
 }
 
 .lines * {
-  stroke: white;
-  stroke-width: 0.6;
-  fill: none;
+  stroke:white;
+  stroke-width:0.6;
+  fill:none;
 }
 
-/* PLAYERS */
 .player {
-  position: absolute;
-  text-align: center;
-  cursor: pointer;
+  position:absolute;
+  text-align:center;
+  cursor:pointer;
 }
 
-.jersey {
-  width: 9vw;
-  max-width: 40px;
-}
+.jersey { width:40px; }
 
-/* ✅ FIXED HERE */
-.number {
-  fill: black;
-  font-size: 12px;
-  font-weight: bold;
-  text-anchor: middle;
-  dominant-baseline: middle;
-}
+.number { fill:black; font-size:12px; font-weight:bold; }
 
 .name {
-  background: #1b5e20;
-  color: white;
-  padding: 2px 5px;
-  border-radius: 10px;
-  font-size: 10px;
+  background:#1b5e20;
+  color:white;
+  font-size:10px;
+  border-radius:10px;
 }
 
-/* POSITIONS */
-.p1 { bottom: 2%; left: 50%; transform: translateX(-50%); }
-.p2 { bottom: 18%; right: 5%; }
-.p3 { bottom: 18%; left: 50%; transform: translateX(-50%); }
-.p4 { bottom: 18%; left: 5%; }
-.p5 { bottom: 32%; right: 5%; }
-.p6 { bottom: 32%; left: 50%; transform: translateX(-50%); }
-.p7 { bottom: 32%; left: 5%; }
-.p8 { bottom: 45%; right: 20%; }
-.p9 { bottom: 45%; left: 20%; }
-.p10 { bottom: 60%; right: 5%; }
-.p11 { bottom: 60%; left: 50%; transform: translateX(-50%); }
-.p12 { bottom: 60%; left: 5%; }
-.p13 { top: 10%; right: 5%; }
-.p14 { top: 10%; left: 50%; transform: translateX(-50%); }
-.p15 { top: 10%; left: 5%; }
+/* positions */
+.p1{bottom:2%;left:50%;transform:translateX(-50%)}
+.p2{bottom:18%;right:5%}
+.p3{bottom:18%;left:50%;transform:translateX(-50%)}
+.p4{bottom:18%;left:5%}
+.p5{bottom:32%;right:5%}
+.p6{bottom:32%;left:50%;transform:translateX(-50%)}
+.p7{bottom:32%;left:5%}
+.p8{bottom:45%;right:20%}
+.p9{bottom:45%;left:20%}
+.p10{bottom:60%;right:5%}
+.p11{bottom:60%;left:50%;transform:translateX(-50%)}
+.p12{bottom:60%;left:5%}
+.p13{top:10%;right:5%}
+.p14{top:10%;left:50%;transform:translateX(-50%)}
+.p15{top:10%;left:5%}
 
+/* saved teams */
+.saved-item {
+  background:white;
+  margin:5px;
+  padding:8px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+}
 </style>
 </head>
 
 <body>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('lineup')">Lineup</div>
+  <div class="tab" onclick="showTab('saved')">Saved Teams</div>
+</div>
+
+<!-- LINEUP -->
+<div id="lineup" class="section active">
 
 <div class="header">
   <input id="teamName" placeholder="Team Name">
@@ -159,13 +166,10 @@ body {
     <button class="btn reset" onclick="resetAll()">Reset</button>
     <button class="btn download" onclick="downloadImage()">Download</button>
     <button class="btn share" onclick="shareImage()">Share</button>
+    <button class="btn store" onclick="storeTeam()">Save Team</button>
   </div>
 
-  <div class="color-picker">
-    Jersey Color: <input type="color" id="colorPicker">
-  </div>
-
-  <div id="msg"></div>
+  Jersey Color: <input type="color" id="colorPicker">
 </div>
 
 <div class="pitch" id="pitch">
@@ -173,95 +177,129 @@ body {
 <svg class="lines" viewBox="0 0 90 140">
   <rect x="0" y="0" width="90" height="140"/>
   <line x1="0" y1="70" x2="90" y2="70"/>
-  <line x1="0" y1="45" x2="90" y2="45"/>
-  <line x1="0" y1="95" x2="90" y2="95"/>
-  <line x1="0" y1="20" x2="90" y2="20"/>
-  <line x1="0" y1="120" x2="90" y2="120"/>
-  <line x1="0" y1="13" x2="90" y2="13"/>
-  <line x1="0" y1="127" x2="90" y2="127"/>
-
-  <rect x="25" y="0" width="40" height="13"/>
-  <rect x="25" y="127" width="40" height="13"/>
-
-  <rect x="38" y="0" width="14" height="4.5"/>
-  <rect x="38" y="135.5" width="14" height="4.5"/>
-
-  <path d="M25 20 A20 20 0 0 0 65 20"/>
-  <path d="M25 120 A20 20 0 0 1 65 120"/>
 </svg>
 
 </div>
 
+</div>
+
+<!-- SAVED -->
+<div id="saved" class="section">
+  <div id="savedList"></div>
+</div>
+
 <script>
 const defaultPlayers = Array(15).fill("Player");
-defaultPlayers[0] = "Goalkeeper";
+defaultPlayers[0]="Goalkeeper";
 
-let players = JSON.parse(localStorage.getItem("team")) || [...defaultPlayers];
-let jerseyColor = localStorage.getItem("jerseyColor") || "#8b0000";
+let players=[...defaultPlayers];
+let jerseyColor="#8b0000";
 
-const pitch = document.getElementById("pitch");
-const input = document.getElementById("teamName");
-const msg = document.getElementById("msg");
-const colorPicker = document.getElementById("colorPicker");
+const pitch=document.getElementById("pitch");
+const input=document.getElementById("teamName");
+const colorPicker=document.getElementById("colorPicker");
 
-input.value = localStorage.getItem("teamName") || "";
-colorPicker.value = jerseyColor;
-
-function saveData() {
-  localStorage.setItem("team", JSON.stringify(players));
-  localStorage.setItem("teamName", input.value);
-  localStorage.setItem("jerseyColor", jerseyColor);
-  showMsg("Saved!");
+function showTab(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  event.target.classList.add("active");
 }
 
-function reloadData() {
-  players = JSON.parse(localStorage.getItem("team")) || [...defaultPlayers];
-  input.value = localStorage.getItem("teamName") || "";
-  jerseyColor = localStorage.getItem("jerseyColor") || "#8b0000";
-  colorPicker.value = jerseyColor;
-  render();
-  showMsg("Reloaded!");
+function storeTeam(){
+  let name=prompt("Save team as:");
+  if(!name)return;
+
+  let saved=JSON.parse(localStorage.getItem("savedTeams")||"[]");
+
+  saved.push({
+    name,
+    players,
+    jerseyColor
+  });
+
+  localStorage.setItem("savedTeams",JSON.stringify(saved));
+  renderSaved();
 }
 
-function resetAll() {
-  if (!confirm("Reset everything?")) return;
-  localStorage.clear();
-  players = [...defaultPlayers];
-  input.value = "";
-  jerseyColor = "#8b0000";
-  colorPicker.value = jerseyColor;
-  render();
-  showMsg("Reset complete");
-}
+function renderSaved(){
+  let list=document.getElementById("savedList");
+  list.innerHTML="";
 
-function downloadImage() {
-  html2canvas(pitch).then(canvas => {
-    let link = document.createElement("a");
-    link.download = "lineup.png";
-    link.href = canvas.toDataURL();
-    link.click();
+  let saved=JSON.parse(localStorage.getItem("savedTeams")||"[]");
+
+  saved.forEach((t,i)=>{
+    let div=document.createElement("div");
+    div.className="saved-item";
+    div.innerHTML=`
+      <span>${t.name}</span>
+      <div>
+        <button onclick="loadTeam(${i})">Load</button>
+        <button onclick="deleteTeam(${i})">X</button>
+      </div>`;
+    list.appendChild(div);
   });
 }
 
-function shareImage() {
-  html2canvas(pitch).then(canvas => {
-    canvas.toBlob(blob => {
-      let file = new File([blob], "lineup.png", { type: "image/png" });
-      if (navigator.share) {
-        navigator.share({ title: "Team Lineup", files: [file] });
-      } else {
-        alert("Sharing not supported. Use Download instead.");
+function loadTeam(i){
+  let saved=JSON.parse(localStorage.getItem("savedTeams"));
+  let t=saved[i];
+
+  players=t.players;
+  jerseyColor=t.jerseyColor;
+  colorPicker.value=jerseyColor;
+  render();
+  showTab('lineup');
+}
+
+function deleteTeam(i){
+  let saved=JSON.parse(localStorage.getItem("savedTeams"));
+  saved.splice(i,1);
+  localStorage.setItem("savedTeams",JSON.stringify(saved));
+  renderSaved();
+}
+
+function saveData(){
+  localStorage.setItem("team",JSON.stringify(players));
+}
+
+function reloadData(){
+  players=JSON.parse(localStorage.getItem("team"))||players;
+  render();
+}
+
+function resetAll(){
+  if(!confirm("Reset?"))return;
+  players=[...defaultPlayers];
+  render();
+}
+
+function downloadImage(){
+  html2canvas(pitch).then(c=>{
+    let a=document.createElement("a");
+    a.href=c.toDataURL();
+    a.download="lineup.png";
+    a.click();
+  });
+}
+
+function shareImage(){
+  html2canvas(pitch).then(c=>{
+    c.toBlob(b=>{
+      let f=new File([b],"lineup.png",{type:"image/png"});
+      if(navigator.share){
+        navigator.share({files:[f]});
       }
     });
   });
 }
 
-colorPicker.oninput = () => {
-  jerseyColor = colorPicker.value;
+colorPicker.oninput=()=>{
+  jerseyColor=colorPicker.value;
   render();
 };
 
-function jersey(n) {
+function jersey(n){
   return `
   <svg viewBox="0 0 64 64" class="jersey">
     <path d="M16 8 L24 4 L40 4 L48 8 L56 20 L48 24 L48 56 L16 56 L16 24 L8 20 Z"
@@ -270,32 +308,23 @@ function jersey(n) {
   </svg>`;
 }
 
-function render() {
-  document.querySelectorAll(".player").forEach(e => e.remove());
+function render(){
+  document.querySelectorAll(".player").forEach(e=>e.remove());
 
-  players.forEach((name, i) => {
-    let d = document.createElement("div");
-    d.className = "player p" + (i+1);
-    d.innerHTML = jersey(i+1) + `<div class="name">${name}</div>`;
-
-    d.onclick = () => {
-      let n = prompt("Edit player:", name);
-      if (n && n.trim()) {
-        players[i] = n;
-        render();
-      }
+  players.forEach((p,i)=>{
+    let d=document.createElement("div");
+    d.className="player p"+(i+1);
+    d.innerHTML=jersey(i+1)+`<div class="name">${p}</div>`;
+    d.onclick=()=>{
+      let n=prompt("Edit",p);
+      if(n){players[i]=n;render();}
     };
-
     pitch.appendChild(d);
   });
 }
 
-function showMsg(t){
-  msg.innerText=t;
-  setTimeout(()=>msg.innerText="",1500);
-}
-
 render();
+renderSaved();
 </script>
 
 </body>
