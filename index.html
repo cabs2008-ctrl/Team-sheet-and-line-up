@@ -9,116 +9,88 @@
 
 <style>
 body {
-  margin: 0;
-  background: #00c853;
-  font-family: Arial;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin:0;
+  background:#00c853;
+  font-family:Arial;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
 /* TABS */
-.tabs {
-  display: flex;
-  width: 100%;
-  max-width: 420px;
+.tabs{
+  display:flex;
+  width:100%;
+  max-width:420px;
 }
-
-.tab {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  background: #2e7d32;
-  color: white;
-  cursor: pointer;
+.tab{
+  flex:1;
+  padding:10px;
+  text-align:center;
+  background:#2e7d32;
+  color:white;
+  cursor:pointer;
 }
-
-.tab.active {
-  background: #1b5e20;
-}
+.tab.active{background:#1b5e20}
 
 /* SECTIONS */
-.section {
-  display: none;
-  width: 100%;
-  max-width: 420px;
-}
-
-.section.active {
-  display: block;
-}
+.section{display:none;width:100%;max-width:420px;}
+.section.active{display:block}
 
 /* HEADER */
-.header {
-  text-align: center;
-  padding: 10px;
-}
-
-#teamName {
-  width: 90%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
+.header{text-align:center;padding:10px;}
+#teamName{
+  width:90%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
 }
 
 /* BUTTONS */
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.btn-group{display:flex;flex-wrap:wrap;justify-content:center;}
+.btn{
+  flex:1 1 45%;
+  margin:4px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-weight:bold;
 }
 
-.btn {
-  flex: 1 1 45%;
-  margin: 4px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  font-weight: bold;
+.save{background:#1565c0}
+.reload{background:#2e7d32}
+.reset{background:#c62828}
+.download{background:#ff9800}
+.share{background:#25D366}
+.store{background:#6a1b9a}
+
+/* PITCH */
+.pitch{
+  width:95vw;
+  max-width:400px;
+  aspect-ratio:90/140;
+  background:repeating-linear-gradient(#4caf50 0 40px,#43a047 40px 80px);
+  border:5px solid #bdbdbd;
+  border-radius:10px;
+  position:relative;
 }
 
-.save { background:#1565c0;}
-.reload { background:#2e7d32;}
-.reset { background:#c62828;}
-.download { background:#ff9800;}
-.share { background:#25D366;}
-.store { background:#6a1b9a;}
+/* LINES */
+.lines *{stroke:white;stroke-width:0.6;fill:none}
 
-.pitch {
-  width: 95vw;
-  max-width: 400px;
-  aspect-ratio: 90 / 140;
-  background: repeating-linear-gradient(#4caf50 0 40px,#43a047 40px 80px);
-  border: 5px solid #bdbdbd;
-  border-radius: 10px;
-  position: relative;
-}
-
-.lines * {
-  stroke:white;
-  stroke-width:0.6;
-  fill:none;
-}
-
-.player {
-  position:absolute;
-  text-align:center;
-  cursor:pointer;
-}
-
-.jersey { width:40px; }
-
-.number { fill:black; font-size:12px; font-weight:bold; }
-
-.name {
+/* PLAYERS */
+.player{position:absolute;text-align:center;cursor:pointer}
+.jersey{width:40px}
+.number{fill:black;font-size:12px;font-weight:bold}
+.name{
   background:#1b5e20;
   color:white;
   font-size:10px;
   border-radius:10px;
 }
 
-/* positions */
+/* POSITIONS */
 .p1{bottom:2%;left:50%;transform:translateX(-50%)}
 .p2{bottom:18%;right:5%}
 .p3{bottom:18%;left:50%;transform:translateX(-50%)}
@@ -135,8 +107,8 @@ body {
 .p14{top:10%;left:50%;transform:translateX(-50%)}
 .p15{top:10%;left:5%}
 
-/* saved teams */
-.saved-item {
+/* SAVED LIST */
+.saved-item{
   background:white;
   margin:5px;
   padding:8px;
@@ -150,8 +122,8 @@ body {
 <body>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('lineup')">Lineup</div>
-  <div class="tab" onclick="showTab('saved')">Saved Teams</div>
+  <div class="tab active" onclick="showTab('lineup',this)">Lineup</div>
+  <div class="tab" onclick="showTab('saved',this)">Saved Teams</div>
 </div>
 
 <!-- LINEUP -->
@@ -173,12 +145,10 @@ body {
 </div>
 
 <div class="pitch" id="pitch">
-
 <svg class="lines" viewBox="0 0 90 140">
   <rect x="0" y="0" width="90" height="140"/>
   <line x1="0" y1="70" x2="90" y2="70"/>
 </svg>
-
 </div>
 
 </div>
@@ -189,7 +159,7 @@ body {
 </div>
 
 <script>
-const defaultPlayers = Array(15).fill("Player");
+const defaultPlayers=Array(15).fill("Player");
 defaultPlayers[0]="Goalkeeper";
 
 let players=[...defaultPlayers];
@@ -199,18 +169,48 @@ const pitch=document.getElementById("pitch");
 const input=document.getElementById("teamName");
 const colorPicker=document.getElementById("colorPicker");
 
-function showTab(id){
+/* TAB SWITCH */
+function showTab(id,el){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  event.target.classList.add("active");
+  el.classList.add("active");
 }
 
+/* SAVE CURRENT */
+function saveData(){
+  localStorage.setItem("team",JSON.stringify(players));
+  localStorage.setItem("teamName",input.value);
+  localStorage.setItem("jerseyColor",jerseyColor);
+}
+
+/* RELOAD */
+function reloadData(){
+  players=JSON.parse(localStorage.getItem("team"))||players;
+  input.value=localStorage.getItem("teamName")||"";
+  jerseyColor=localStorage.getItem("jerseyColor")||"#8b0000";
+  colorPicker.value=jerseyColor;
+  render();
+}
+
+/* RESET */
+function resetAll(){
+  if(!confirm("Reset everything?"))return;
+  localStorage.clear();
+  players=[...defaultPlayers];
+  input.value="";
+  jerseyColor="#8b0000";
+  colorPicker.value=jerseyColor;
+  render();
+}
+
+/* SAVE TEAM LIST */
 function storeTeam(){
-  let name=prompt("Save team as:");
+  let name=prompt("Team name?");
   if(!name)return;
 
-  let saved=JSON.parse(localStorage.getItem("savedTeams")||"[]");
+  let saved=JSON.parse(localStorage.getItem("teams")||"[]");
 
   saved.push({
     name,
@@ -218,15 +218,16 @@ function storeTeam(){
     jerseyColor
   });
 
-  localStorage.setItem("savedTeams",JSON.stringify(saved));
+  localStorage.setItem("teams",JSON.stringify(saved));
   renderSaved();
 }
 
+/* RENDER SAVED */
 function renderSaved(){
   let list=document.getElementById("savedList");
   list.innerHTML="";
 
-  let saved=JSON.parse(localStorage.getItem("savedTeams")||"[]");
+  let saved=JSON.parse(localStorage.getItem("teams")||"[]");
 
   saved.forEach((t,i)=>{
     let div=document.createElement("div");
@@ -241,39 +242,28 @@ function renderSaved(){
   });
 }
 
+/* LOAD TEAM */
 function loadTeam(i){
-  let saved=JSON.parse(localStorage.getItem("savedTeams"));
+  let saved=JSON.parse(localStorage.getItem("teams"));
   let t=saved[i];
 
   players=t.players;
   jerseyColor=t.jerseyColor;
   colorPicker.value=jerseyColor;
   render();
-  showTab('lineup');
+
+  showTab("lineup",document.querySelectorAll(".tab")[0]);
 }
 
+/* DELETE */
 function deleteTeam(i){
-  let saved=JSON.parse(localStorage.getItem("savedTeams"));
+  let saved=JSON.parse(localStorage.getItem("teams"));
   saved.splice(i,1);
-  localStorage.setItem("savedTeams",JSON.stringify(saved));
+  localStorage.setItem("teams",JSON.stringify(saved));
   renderSaved();
 }
 
-function saveData(){
-  localStorage.setItem("team",JSON.stringify(players));
-}
-
-function reloadData(){
-  players=JSON.parse(localStorage.getItem("team"))||players;
-  render();
-}
-
-function resetAll(){
-  if(!confirm("Reset?"))return;
-  players=[...defaultPlayers];
-  render();
-}
-
+/* IMAGE */
 function downloadImage(){
   html2canvas(pitch).then(c=>{
     let a=document.createElement("a");
@@ -283,6 +273,7 @@ function downloadImage(){
   });
 }
 
+/* SHARE */
 function shareImage(){
   html2canvas(pitch).then(c=>{
     c.toBlob(b=>{
@@ -294,11 +285,13 @@ function shareImage(){
   });
 }
 
+/* COLOR */
 colorPicker.oninput=()=>{
   jerseyColor=colorPicker.value;
   render();
 };
 
+/* JERSEY */
 function jersey(n){
   return `
   <svg viewBox="0 0 64 64" class="jersey">
@@ -308,6 +301,7 @@ function jersey(n){
   </svg>`;
 }
 
+/* RENDER */
 function render(){
   document.querySelectorAll(".player").forEach(e=>e.remove());
 
