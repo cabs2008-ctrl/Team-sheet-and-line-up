@@ -3,47 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GAA Lineup</title>
+<title>GAA Lineup & Defensive Marking Plan</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-body {
+*{
+  box-sizing:border-box;
+}
+
+body{
   margin:0;
   background:#00c853;
-  font-family:Arial;
+  font-family:Arial,sans-serif;
   display:flex;
   flex-direction:column;
   align-items:center;
 }
 
+/* TABS */
+
 .tabs{
   display:flex;
   width:100%;
-  max-width:420px;
+  max-width:500px;
 }
+
 .tab{
   flex:1;
-  padding:10px;
+  padding:12px;
   text-align:center;
   background:#2e7d32;
   color:white;
   cursor:pointer;
+  font-weight:bold;
 }
-.tab.active{background:#1b5e20}
 
-.section{display:none;width:100%;max-width:420px;}
-.section.active{display:block}
+.tab.active{
+  background:#1b5e20;
+}
 
-.header{text-align:center;padding:10px;}
-#teamName{
-  width:90%;
+.section{
+  display:none;
+  width:100%;
+  max-width:500px;
+}
+
+.section.active{
+  display:block;
+}
+
+/* HEADER */
+
+.header{
+  text-align:center;
   padding:10px;
-  border-radius:8px;
-  border:none;
 }
 
-.btn-group{display:flex;flex-wrap:wrap;justify-content:center;}
+input[type="text"]{
+  width:100%;
+  padding:10px;
+  margin:4px 0;
+  border:none;
+  border-radius:8px;
+  font-size:15px;
+}
+
+.team-fields{
+  background:rgba(255,255,255,.15);
+  padding:8px;
+  border-radius:10px;
+  margin-bottom:8px;
+}
+
+.field-label{
+  color:white;
+  font-weight:bold;
+  font-size:13px;
+  display:block;
+  text-align:left;
+  margin-top:4px;
+}
+
+.btn-group{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
 .btn{
   flex:1 1 45%;
   margin:4px;
@@ -52,6 +99,7 @@ body {
   border-radius:10px;
   color:white;
   font-weight:bold;
+  cursor:pointer;
 }
 
 .reload{background:#2e7d32}
@@ -60,220 +108,1235 @@ body {
 .share{background:#25D366}
 .store{background:#6a1b9a}
 
+/* PITCH */
+
 .pitch{
   width:95vw;
   max-width:400px;
   aspect-ratio:90/140;
-  background:repeating-linear-gradient(#4caf50 0 40px,#43a047 40px 80px);
+  background:repeating-linear-gradient(
+    #4caf50 0 40px,
+    #43a047 40px 80px
+  );
   border:5px solid #bdbdbd;
   border-radius:10px;
   position:relative;
+  overflow:hidden;
 }
 
-.lines *{stroke:white;stroke-width:0.6;fill:none}
+.lines{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
 
-.player{position:absolute;text-align:center;cursor:pointer}
-.jersey{width:40px}
-.number{fill:black;font-size:12px;font-weight:bold;text-anchor:middle}
+.lines *{
+  stroke:white;
+  stroke-width:.6;
+  fill:none;
+}
+
+/* PLAYER */
+
+.player{
+  position:absolute;
+  text-align:center;
+  cursor:pointer;
+  z-index:5;
+  width:75px;
+  transform-origin:center;
+}
+
+.player.p1,
+.player.p3,
+.player.p6,
+.player.p11,
+.player.p14{
+  transform:translateX(-50%);
+}
+
+.jersey{
+  width:40px;
+  height:40px;
+}
+
+.number{
+  fill:black;
+  font-size:12px;
+  font-weight:bold;
+  text-anchor:middle;
+}
 
 .name{
   background:#1b5e20;
   color:white;
   font-size:10px;
   border-radius:10px;
-  min-height:14px; /* 👈 keeps box visible when empty */
-  padding:2px 6px;
+  min-height:14px;
+  padding:2px 5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:90px;
+  margin:auto;
+}
+
+/* OPPOSITION MARKING */
+
+.marking{
+  background:#c62828;
+  color:white;
+  font-size:8px;
+  font-weight:bold;
+  border-radius:8px;
+  padding:2px 4px;
+  margin-top:2px;
+  min-height:12px;
+  max-width:95px;
+  margin-left:auto;
+  margin-right:auto;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.marking.empty{
+  background:#8e0000;
+  opacity:.8;
 }
 
 /* POSITIONS */
-.p1{bottom:2%;left:50%;transform:translateX(-50%)}
-.p2{bottom:18%;right:5%}
-.p3{bottom:18%;left:50%;transform:translateX(-50%)}
-.p4{bottom:18%;left:5%}
-.p5{bottom:32%;right:5%}
-.p6{bottom:32%;left:50%;transform:translateX(-50%)}
-.p7{bottom:32%;left:5%}
-.p8{bottom:45%;right:20%}
-.p9{bottom:45%;left:20%}
-.p10{bottom:60%;right:5%}
-.p11{bottom:60%;left:50%;transform:translateX(-50%)}
-.p12{bottom:60%;left:5%}
-.p13{top:10%;right:5%}
-.p14{top:10%;left:50%;transform:translateX(-50%)}
-.p15{top:10%;left:5%}
+
+.p1{
+  bottom:2%;
+  left:50%;
+}
+
+.p2{
+  bottom:18%;
+  right:2%;
+}
+
+.p3{
+  bottom:18%;
+  left:50%;
+}
+
+.p4{
+  bottom:18%;
+  left:2%;
+}
+
+.p5{
+  bottom:32%;
+  right:2%;
+}
+
+.p6{
+  bottom:32%;
+  left:50%;
+}
+
+.p7{
+  bottom:32%;
+  left:2%;
+}
+
+.p8{
+  bottom:45%;
+  right:15%;
+}
+
+.p9{
+  bottom:45%;
+  left:15%;
+}
+
+.p10{
+  bottom:60%;
+  right:2%;
+}
+
+.p11{
+  bottom:60%;
+  left:50%;
+}
+
+.p12{
+  bottom:60%;
+  left:2%;
+}
+
+.p13{
+  top:10%;
+  right:2%;
+}
+
+.p14{
+  top:10%;
+  left:50%;
+}
+
+.p15{
+  top:10%;
+  left:2%;
+}
+
+/* SAVED TEAMS */
 
 .saved-item{
   background:white;
-  margin:5px;
-  padding:8px;
+  margin:6px;
+  padding:10px;
   border-radius:8px;
   display:flex;
   justify-content:space-between;
+  align-items:center;
 }
+
+.saved-info{
+  display:flex;
+  flex-direction:column;
+}
+
+.saved-name{
+  font-weight:bold;
+}
+
+.saved-opposition{
+  font-size:12px;
+  color:#555;
+  margin-top:3px;
+}
+
+.saved-item button{
+  margin-left:4px;
+  padding:7px 9px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.load-btn{
+  background:#2e7d32;
+  color:white;
+}
+
+.delete-btn{
+  background:#c62828;
+  color:white;
+}
+
+/* INFO */
+
+.instructions{
+  background:white;
+  margin:8px;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+  line-height:1.4;
+}
+
+.instructions strong{
+  color:#1b5e20;
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- TABS -->
+
 <div class="tabs">
-  <div class="tab active" onclick="showTab('lineup',this)">Lineup</div>
-  <div class="tab" onclick="showTab('saved',this)">Saved Teams</div>
+  <div class="tab active" onclick="showTab('lineup',this)">
+    Lineup & Marking
+  </div>
+
+  <div class="tab" onclick="showTab('saved',this)">
+    Saved Teams
+  </div>
 </div>
+
+
+<!-- LINEUP -->
 
 <div id="lineup" class="section active">
 
 <div class="header">
-  <input id="teamName" placeholder="Team Name">
 
-  <div class="btn-group">
-    <button class="btn reload" onclick="reloadData()">Reload</button>
-    <button class="btn reset" onclick="resetAll()">Reset</button>
-    <button class="btn download" onclick="downloadImage()">Download</button>
-    <button class="btn share" onclick="shareImage()">Share</button>
-    <button class="btn store" onclick="storeTeam()">Save Team</button>
+  <div class="team-fields">
+
+    <label class="field-label">
+      HOME TEAM
+    </label>
+
+    <input
+      type="text"
+      id="teamName"
+      placeholder="Enter your team name"
+    >
+
+    <label class="field-label">
+      OPPOSITION
+    </label>
+
+    <input
+      type="text"
+      id="oppositionName"
+      placeholder="Enter opposition name"
+    >
+
   </div>
 
-  Jersey Color: <input type="color" id="colorPicker">
+
+  <div class="btn-group">
+
+    <button class="btn reload" onclick="reloadData()">
+      Reload
+    </button>
+
+    <button class="btn reset" onclick="resetAll()">
+      Reset
+    </button>
+
+    <button class="btn download" onclick="downloadImage()">
+      Download
+    </button>
+
+    <button class="btn share" onclick="shareImage()">
+      Share
+    </button>
+
+    <button class="btn store" onclick="storeTeam()">
+      Save Team
+    </button>
+
+  </div>
+
+
+  <div style="color:white;font-weight:bold;margin-top:5px;">
+    Jersey Colour:
+    <input
+      type="color"
+      id="colorPicker"
+      value="#8b0000"
+    >
+  </div>
+
 </div>
+
+
+<div class="instructions">
+
+  <strong>Defensive Marking Plan</strong><br>
+
+  Tap any player on the pitch to enter your player name
+  and the opposition player they are expected to mark.
+
+  <br><br>
+
+  Example:
+
+  <strong>#5 John Murphy</strong><br>
+  Marking: <strong>#12 Brian Kelly</strong>
+
+</div>
+
+
+<!-- PITCH -->
 
 <div class="pitch" id="pitch">
+
 <svg class="lines" viewBox="0 0 90 140">
+
   <rect x="0" y="0" width="90" height="140"/>
-  <line x1="0" y1="70" x2="90" y2="70"/>
+
+  <line
+    x1="0"
+    y1="70"
+    x2="90"
+    y2="70"
+  />
+
 </svg>
+
 </div>
 
 </div>
+
+
+<!-- SAVED TEAMS -->
 
 <div id="saved" class="section">
+
   <div id="savedList"></div>
+
 </div>
 
+
 <script>
-const defaultPlayers=Array(15).fill(""); // 👈 EMPTY instead of "Player"
 
-let players=[...defaultPlayers];
-let jerseyColor="#8b0000";
+/* ================================
+   DEFAULT DATA
+================================ */
 
-const pitch=document.getElementById("pitch");
-const input=document.getElementById("teamName");
-const colorPicker=document.getElementById("colorPicker");
+const defaultPlayers = Array(15).fill("");
+
+const defaultMarking = Array(15).fill("");
+
+let players = [...defaultPlayers];
+
+let marking = [...defaultMarking];
+
+let jerseyColor = "#8b0000";
+
+let teamName = "";
+
+let oppositionName = "";
+
+
+/* ================================
+   ELEMENTS
+================================ */
+
+const pitch =
+  document.getElementById("pitch");
+
+const input =
+  document.getElementById("teamName");
+
+const oppositionInput =
+  document.getElementById("oppositionName");
+
+const colorPicker =
+  document.getElementById("colorPicker");
+
+
+/* ================================
+   TAB SYSTEM
+================================ */
 
 function showTab(id,el){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+
+  document
+    .querySelectorAll(".section")
+    .forEach(s =>
+      s.classList.remove("active")
+    );
+
+  document
+    .getElementById(id)
+    .classList.add("active");
+
+  document
+    .querySelectorAll(".tab")
+    .forEach(t =>
+      t.classList.remove("active")
+    );
+
   el.classList.add("active");
+
 }
+
+
+/* ================================
+   RELOAD
+================================ */
 
 function reloadData(){
-  players=JSON.parse(localStorage.getItem("team"))||players;
+
+  const savedPlayers =
+    localStorage.getItem("team");
+
+  const savedMarking =
+    localStorage.getItem("marking");
+
+  const savedTeamName =
+    localStorage.getItem("teamName");
+
+  const savedOpposition =
+    localStorage.getItem("oppositionName");
+
+  const savedColour =
+    localStorage.getItem("jerseyColor");
+
+
+  if(savedPlayers){
+
+    players =
+      JSON.parse(savedPlayers);
+
+  }
+
+
+  if(savedMarking){
+
+    marking =
+      JSON.parse(savedMarking);
+
+  }
+
+
+  if(savedTeamName){
+
+    teamName =
+      savedTeamName;
+
+    input.value =
+      teamName;
+
+  }
+
+
+  if(savedOpposition){
+
+    oppositionName =
+      savedOpposition;
+
+    oppositionInput.value =
+      oppositionName;
+
+  }
+
+
+  if(savedColour){
+
+    jerseyColor =
+      savedColour;
+
+    colorPicker.value =
+      jerseyColor;
+
+  }
+
+
   render();
+
 }
+
+
+/* ================================
+   SAVE CURRENT DATA
+================================ */
+
+function saveCurrentData(){
+
+  localStorage.setItem(
+    "team",
+    JSON.stringify(players)
+  );
+
+  localStorage.setItem(
+    "marking",
+    JSON.stringify(marking)
+  );
+
+  localStorage.setItem(
+    "teamName",
+    teamName
+  );
+
+  localStorage.setItem(
+    "oppositionName",
+    oppositionName
+  );
+
+  localStorage.setItem(
+    "jerseyColor",
+    jerseyColor
+  );
+
+}
+
+
+/* ================================
+   RESET
+================================ */
 
 function resetAll(){
-  if(!confirm("Reset everything?"))return;
-  localStorage.clear();
-  players=[...defaultPlayers];
+
+  if(!confirm(
+    "Reset the current lineup and marking plan?"
+  )) return;
+
+
+  players =
+    [...defaultPlayers];
+
+  marking =
+    [...defaultMarking];
+
+  teamName = "";
+
+  oppositionName = "";
+
+  input.value = "";
+
+  oppositionInput.value = "";
+
+  localStorage.removeItem("team");
+
+  localStorage.removeItem("marking");
+
+  localStorage.removeItem("teamName");
+
+  localStorage.removeItem("oppositionName");
+
   render();
+
 }
+
+
+/* ================================
+   SAVE TEAM
+================================ */
 
 function storeTeam(){
-  let name=prompt("Team name?");
-  if(!name)return;
 
-  let saved=JSON.parse(localStorage.getItem("teams")||"[]");
-  saved.push({name,players,jerseyColor});
-  localStorage.setItem("teams",JSON.stringify(saved));
+  let name =
+    prompt(
+      "Name this saved team/plan:"
+    );
+
+  if(!name) return;
+
+
+  let saved =
+    JSON.parse(
+      localStorage.getItem("teams") || "[]"
+    );
+
+
+  saved.push({
+
+    name:name,
+
+    teamName:teamName,
+
+    oppositionName:oppositionName,
+
+    players:[...players],
+
+    marking:[...marking],
+
+    jerseyColor:jerseyColor
+
+  });
+
+
+  localStorage.setItem(
+    "teams",
+    JSON.stringify(saved)
+  );
+
+
   renderSaved();
+
+  alert(
+    "Team and defensive marking plan saved."
+  );
+
 }
+
+
+/* ================================
+   SAVED TEAMS
+================================ */
 
 function renderSaved(){
-  let list=document.getElementById("savedList");
-  list.innerHTML="";
-  let saved=JSON.parse(localStorage.getItem("teams")||"[]");
+
+  let list =
+    document.getElementById("savedList");
+
+  list.innerHTML = "";
+
+
+  let saved =
+    JSON.parse(
+      localStorage.getItem("teams") || "[]"
+    );
+
+
+  if(saved.length === 0){
+
+    list.innerHTML = `
+      <div class="instructions">
+        No saved teams yet.
+      </div>
+    `;
+
+    return;
+
+  }
+
 
   saved.forEach((t,i)=>{
-    let div=document.createElement("div");
-    div.className="saved-item";
-    div.innerHTML=`
-      <span>${t.name}</span>
+
+    let div =
+      document.createElement("div");
+
+    div.className =
+      "saved-item";
+
+
+    div.innerHTML = `
+
+      <div class="saved-info">
+
+        <div class="saved-name">
+          ${escapeHTML(t.name)}
+        </div>
+
+        <div class="saved-opposition">
+          ${escapeHTML(t.teamName || "")}
+          ${
+            t.oppositionName
+              ? " vs " + escapeHTML(t.oppositionName)
+              : ""
+          }
+        </div>
+
+      </div>
+
       <div>
-        <button onclick="loadTeam(${i})">Load</button>
-        <button onclick="deleteTeam(${i})">X</button>
-      </div>`;
+
+        <button
+          class="load-btn"
+          onclick="loadTeam(${i})">
+          Load
+        </button>
+
+        <button
+          class="delete-btn"
+          onclick="deleteTeam(${i})">
+          X
+        </button>
+
+      </div>
+
+    `;
+
+
     list.appendChild(div);
+
   });
+
 }
+
+
+/* ================================
+   LOAD TEAM
+================================ */
 
 function loadTeam(i){
-  let saved=JSON.parse(localStorage.getItem("teams"));
-  let t=saved[i];
-  players=t.players;
-  jerseyColor=t.jerseyColor;
-  colorPicker.value=jerseyColor;
+
+  let saved =
+    JSON.parse(
+      localStorage.getItem("teams")
+    );
+
+
+  let t =
+    saved[i];
+
+
+  players =
+    [...t.players];
+
+
+  marking =
+    [...(t.marking || defaultMarking)];
+
+
+  teamName =
+    t.teamName || "";
+
+
+  oppositionName =
+    t.oppositionName || "";
+
+
+  jerseyColor =
+    t.jerseyColor || "#8b0000";
+
+
+  input.value =
+    teamName;
+
+
+  oppositionInput.value =
+    oppositionName;
+
+
+  colorPicker.value =
+    jerseyColor;
+
+
+  saveCurrentData();
+
   render();
-  showTab("lineup",document.querySelectorAll(".tab")[0]);
+
+
+  showTab(
+    "lineup",
+    document.querySelectorAll(".tab")[0]
+  );
+
 }
+
+
+/* ================================
+   DELETE TEAM
+================================ */
 
 function deleteTeam(i){
-  let saved=JSON.parse(localStorage.getItem("teams"));
+
+  let saved =
+    JSON.parse(
+      localStorage.getItem("teams")
+    );
+
+
+  if(!confirm(
+    "Delete this saved team?"
+  )) return;
+
+
   saved.splice(i,1);
-  localStorage.setItem("teams",JSON.stringify(saved));
+
+
+  localStorage.setItem(
+    "teams",
+    JSON.stringify(saved)
+  );
+
+
   renderSaved();
+
 }
+
+
+/* ================================
+   DOWNLOAD IMAGE
+================================ */
 
 function downloadImage(){
-  html2canvas(pitch).then(c=>{
-    let a=document.createElement("a");
-    a.href=c.toDataURL();
-    a.download="lineup.png";
+
+  html2canvas(pitch,{
+
+    backgroundColor:null,
+
+    scale:2
+
+  }).then(c=>{
+
+    let a =
+      document.createElement("a");
+
+    a.href =
+      c.toDataURL("image/png");
+
+    let filename =
+      (teamName || "GAA-Lineup")
+      .replace(/[^a-z0-9]/gi,"-");
+
+    a.download =
+      filename + "-marking-plan.png";
+
     a.click();
+
   });
+
 }
+
+
+/* ================================
+   SHARE IMAGE
+================================ */
 
 function shareImage(){
-  html2canvas(pitch).then(c=>{
-    c.toBlob(b=>{
-      let f=new File([b],"lineup.png",{type:"image/png"});
-      if(navigator.share){
-        navigator.share({files:[f]});
+
+  html2canvas(pitch,{
+
+    backgroundColor:null,
+
+    scale:2
+
+  }).then(c=>{
+
+    c.toBlob(async b=>{
+
+      if(!b) return;
+
+
+      let filename =
+        "GAA-Marking-Plan.png";
+
+
+      let f =
+        new File(
+          [b],
+          filename,
+          {type:"image/png"}
+        );
+
+
+      if(
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({files:[f]})
+      ){
+
+        try{
+
+          await navigator.share({
+
+            title:
+              "GAA Defensive Marking Plan",
+
+            text:
+              `${teamName || "Home Team"} vs ${
+                oppositionName || "Opposition"
+              }`,
+
+            files:[f]
+
+          });
+
+        }
+        catch(err){
+
+          console.log(err);
+
+        }
+
       }
+      else{
+
+        alert(
+          "Image sharing is not supported on this device. Use Download instead."
+        );
+
+      }
+
     });
+
   });
+
 }
 
-colorPicker.oninput=()=>{
-  jerseyColor=colorPicker.value;
+
+/* ================================
+   TEAM NAME
+================================ */
+
+input.oninput = ()=>{
+
+  teamName =
+    input.value;
+
+  saveCurrentData();
+
   render();
+
 };
 
+
+/* ================================
+   OPPOSITION
+================================ */
+
+oppositionInput.oninput = ()=>{
+
+  oppositionName =
+    oppositionInput.value;
+
+  saveCurrentData();
+
+  render();
+
+};
+
+
+/* ================================
+   COLOUR
+================================ */
+
+colorPicker.oninput = ()=>{
+
+  jerseyColor =
+    colorPicker.value;
+
+  saveCurrentData();
+
+  render();
+
+};
+
+
+/* ================================
+   JERSEY
+================================ */
+
 function jersey(n){
+
   return `
-  <svg viewBox="0 0 64 64" class="jersey">
-    <path d="M16 8 L24 4 L40 4 L48 8 L56 20 L48 24 L48 56 L16 56 L16 24 L8 20 Z"
-    fill="${jerseyColor}"/>
-    <text x="32" y="32" dy=".35em" class="number">${n}</text>
-  </svg>`;
+
+  <svg
+    viewBox="0 0 64 64"
+    class="jersey">
+
+    <path
+      d="
+      M16 8
+      L24 4
+      L40 4
+      L48 8
+      L56 20
+      L48 24
+      L48 56
+      L16 56
+      L16 24
+      L8 20
+      Z"
+      fill="${jerseyColor}"
+    />
+
+    <text
+      x="32"
+      y="32"
+      dy=".35em"
+      class="number">
+
+      ${n}
+
+    </text>
+
+  </svg>
+
+  `;
+
 }
+
+
+/* ================================
+   PLAYER EDIT
+================================ */
+
+function editPlayer(i){
+
+  let currentPlayer =
+    players[i] || "";
+
+
+  let currentMark =
+    marking[i] || "";
+
+
+  let playerName =
+    prompt(
+      `Home player #${i+1}\n\nEnter player name:`,
+      currentPlayer
+    );
+
+
+  if(playerName === null)
+    return;
+
+
+  players[i] =
+    playerName;
+
+
+  let opponent =
+    prompt(
+      `Defensive marking for #${i+1} ${playerName || ""}\n\nEnter opposition jersey number and name.\n\nExample: 12 - Brian Kelly`,
+      currentMark
+    );
+
+
+  if(opponent !== null){
+
+    marking[i] =
+      opponent;
+
+  }
+
+
+  saveCurrentData();
+
+  render();
+
+}
+
+
+/* ================================
+   RENDER
+================================ */
 
 function render(){
-  document.querySelectorAll(".player").forEach(e=>e.remove());
+
+  document
+    .querySelectorAll(".player")
+    .forEach(e=>e.remove());
+
 
   players.forEach((p,i)=>{
-    let d=document.createElement("div");
-    d.className="player p"+(i+1);
-    d.innerHTML=jersey(i+1)+`<div class="name">${p}</div>`;
-    d.onclick=()=>{
-      let n=prompt("Edit player:",p);
-      if(n!==null){players[i]=n;render();}
+
+    let d =
+      document.createElement("div");
+
+
+    d.className =
+      "player p"+(i+1);
+
+
+    let mark =
+      marking[i] || "";
+
+
+    d.innerHTML = `
+
+      ${jersey(i+1)}
+
+      <div class="name">
+        ${escapeHTML(p)}
+      </div>
+
+      <div class="
+        marking
+        ${mark ? "" : "empty"}
+      ">
+
+        ${
+          mark
+          ? "Mark: " + escapeHTML(mark)
+          : "Marking"
+        }
+
+      </div>
+
+    `;
+
+
+    d.onclick = ()=>{
+
+      editPlayer(i);
+
     };
+
+
     pitch.appendChild(d);
+
   });
+
+
+  /* HEADER ON PITCH */
+
+  let oldHeader =
+    document.getElementById(
+      "pitchHeader"
+    );
+
+
+  if(oldHeader)
+    oldHeader.remove();
+
+
+  let header =
+    document.createElement("div");
+
+
+  header.id =
+    "pitchHeader";
+
+
+  header.style.position =
+    "absolute";
+
+  header.style.top =
+    "2px";
+
+  header.style.left =
+    "50%";
+
+  header.style.transform =
+    "translateX(-50%)";
+
+  header.style.zIndex =
+    "10";
+
+  header.style.width =
+    "95%";
+
+  header.style.textAlign =
+    "center";
+
+  header.style.color =
+    "white";
+
+  header.style.textShadow =
+    "1px 1px 2px #000";
+
+  header.style.fontWeight =
+    "bold";
+
+  header.style.fontSize =
+    "12px";
+
+
+  header.innerHTML = `
+
+    <div>
+      ${escapeHTML(teamName || "HOME TEAM")}
+    </div>
+
+    <div style="font-size:11px;">
+      VS
+      ${escapeHTML(oppositionName || "OPPOSITION")}
+    </div>
+
+  `;
+
+
+  pitch.appendChild(header);
+
 }
 
-render();
+
+/* ================================
+   HTML SAFETY
+================================ */
+
+function escapeHTML(value){
+
+  if(value === null ||
+     value === undefined)
+    return "";
+
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ================================
+   START
+================================ */
+
+reloadData();
+
 renderSaved();
+
 </script>
 
 </body>
